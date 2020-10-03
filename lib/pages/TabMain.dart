@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:second_hand_trading_app/pages/components/SearchBox.dart';
+
 
 import 'components/TabNavigator.dart';
 
@@ -15,6 +15,7 @@ class _TabMainState extends State<TabMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: IndexedStack(
         index: _currentIndex,
         children: <Widget>[

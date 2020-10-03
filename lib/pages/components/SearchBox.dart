@@ -6,7 +6,6 @@ class SearchBox extends StatefulWidget {
 
   @override
   _SearchBoxState createState() => new _SearchBoxState();
-
 }
 
 /// State for [ExampleWidget] widgets.
@@ -15,28 +14,29 @@ class _SearchBoxState extends State<SearchBox> {
 
   @override
   Widget build(BuildContext context) {
-    return new Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        new TextField(
-          controller: _controller,
-          decoration: new InputDecoration(
-            hintText: 'Type something',
+    Widget w = new Row(
+        children: <Widget>[
+          Expanded(child:new TextField(
+            controller: _controller,
+            decoration: new InputDecoration(
+              hintText: 'Type something',
+            ),
+          ),),
+          new RaisedButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                child: new AlertDialog(
+                  title: new Text('What you typed'),
+                  content: new Text(_controller.text),
+                ),
+              );
+            },
+            child: new Text('DONE'),
           ),
-        ),
-        new RaisedButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              child: new AlertDialog(
-                title: new Text('What you typed'),
-                content: new Text(_controller.text),
-              ),
-            );
-          },
-          child: new Text('DONE'),
-        ),
-      ],
-    );
+        ],
+      );
+
+    return w;
   }
 }
