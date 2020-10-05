@@ -8,18 +8,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:second_hand_trading_app/main.dart';
-import 'package:second_hand_trading_app/pages/TabMain.dart';
+import 'file:///E:/second_hand_trading_app/lib/view/TabMain.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(TabMain());
 
-
     // Tap the '+' icon and trigger a frame.
     await tester.tap(find.byIcon(Icons.perm_identity));
     await tester.pump();
-
   });
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
-import 'components/TabNavigator.dart';
+import '../view/components/TabNavigator.dart';
 
 class TabMain extends StatefulWidget {
   @override
@@ -15,7 +14,6 @@ class _TabMainState extends State<TabMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: IndexedStack(
         index: _currentIndex,
         children: <Widget>[

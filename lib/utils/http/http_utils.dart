@@ -24,7 +24,7 @@ class Http {
       connectTimeout: 30000,
       receiveTimeout: 30000,
       sendTimeout: 30000,
-      baseUrl: "http://api.douban.com",
+      baseUrl: "http://",
       responseType: ResponseType.json,
     ));
     dio.interceptors.add(DioLogInterceptor());

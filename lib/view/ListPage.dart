@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:second_hand_trading_app/pages/DetailPage.dart';
+
+import 'file:///E:/second_hand_trading_app/lib/view/DetailPage.dart';
 
 class ListPage extends StatelessWidget {
   ListPage(this.index);
