@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:second_hand_trading_app/view/components/search_bar.dart';
-
-import 'components/TabNavigator.dart';
+import 'package:second_hand_trading_app/view/ListPage.dart';
+import 'package:second_hand_trading_app/view/personal_center.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -14,15 +13,15 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: SearchBar(),
-      ),
+      // appBar: AppBar(
+      //   title: SearchBar(),
+      // ),
       body: IndexedStack(
         index: _currentIndex,
         children: <Widget>[
-          TabNavigator(0),
-          TabNavigator(1),
-          TabNavigator(2),
+          ListPage(1),
+          ListPage(2),
+          PersonalCenter(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -24,7 +24,7 @@ class Http {
       connectTimeout: 30000,
       receiveTimeout: 30000,
       sendTimeout: 30000,
-      baseUrl: "http://",
+      baseUrl: "http://10.0.2.2:8080",
       responseType: ResponseType.json,
     ));
     dio.interceptors.add(DioLogInterceptor());
@@ -35,6 +35,26 @@ class Http {
   Future<void> get(String uri, Map<String, dynamic> params,
       {Success success, Fail fail, After after}) {
     _dio.get(uri, queryParameters: params).then((response) {
+      if (response.statusCode == 200) {
+        if (success != null) {
+          success(response.data);
+        }
+      } else {
+        if (fail != null) {
+          fail(response.statusMessage, response.statusCode);
+        }
+      }
+
+      if (after != null) {
+        after();
+      }
+    });
+    return Future.value();
+  }
+
+  Future<void> post(String uri, Map<String, dynamic> data,
+      {Success success, Fail fail, After after}) {
+    _dio.post(uri, data: data).then((response) {
       if (response.statusCode == 200) {
         if (success != null) {
           success(response.data);

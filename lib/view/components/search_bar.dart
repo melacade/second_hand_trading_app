@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:second_hand_trading_app/common/routes.dart';
 
 class SearchBar extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _SearchBarState extends State<SearchBar> {
           Expanded(
             child: TextField(
               controller: _controller,
+              readOnly: true,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -29,7 +31,9 @@ class _SearchBarState extends State<SearchBar> {
               style: TextStyle(
                 fontSize: 20,
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, Routes.searchPage);
+              },
             ),
           ),
           IconButton(

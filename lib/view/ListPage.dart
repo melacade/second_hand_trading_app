@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:second_hand_trading_app/common/routes.dart';
 
-import 'file:///E:/second_hand_trading_app/lib/view/DetailPage.dart';
+import 'components/search_bar.dart';
 
 class ListPage extends StatelessWidget {
   ListPage(this.index);
@@ -10,13 +12,17 @@ class ListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: SearchBar(),
+      ),
       body: Center(
         child: RaisedButton(
-          child: Text('$index'),
+          child: Text(
+            '$index',
+            style: TextStyle(fontSize: 20.ssp),
+          ),
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return DetailPage();
-            }));
+            Navigator.pushNamed(context, Routes.detailPage, arguments: index);
           },
         ),
       ),

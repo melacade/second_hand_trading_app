@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:second_hand_trading_app/utils/image_loader.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -31,6 +30,7 @@ class _SplashPage extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -54,16 +54,12 @@ class _SplashPage extends State<SplashPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ImageLoader(
-                  "https://bkimg.cdn.bcebos.com/pic/3bf33a87e950352a317"
-                  "a4b9e5e43fbf2b2118b09?x-bce-process=image/watermark,"
-                  "image_d2F0ZXIvYmFpa2U5Mg==,g_7,xp_5,yp_5",
-                  400),
+              Image(image: AssetImage('assets/images/timg.jpg')),
               Text(
                 "西南交通大学二手交易平台",
                 style: TextStyle(
                     color: Colors.blue,
-                    fontSize: 30,
+                    fontSize: 30.ssp,
                     fontWeight: FontWeight.bold),
               )
             ],
