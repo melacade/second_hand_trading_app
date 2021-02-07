@@ -1,41 +1,87 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:second_hand_trading_app/api/user_api.dart';
+import 'package:second_hand_trading_app/base/provider_wedget.dart';
 import 'package:second_hand_trading_app/utils/http/http_utils.dart';
+import 'package:second_hand_trading_app/viewmodel/user_view_model.dart';
+
+import 'components/login_animation.dart';
+import 'components/login_button.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final _formKey = new GlobalKey<FormState>();
-
+class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
+  AnimationController _loginButtonController;
   String _userID;
   String _password;
   bool _isChecked = true;
   bool _isLoading = true;
+  bool _isLogined = false;
   IconData _checkIcon = Icons.check_box;
+  var animationStatus = 0;
+  @override
+  void initState() {
+    super.initState();
+    _loginButtonController = new AnimationController(
+        duration: new Duration(milliseconds: 3000), vsync: this);
+    _loginButtonController.addListener(() {
+      if(_loginButtonController.isCompleted){
+        setState(() {
+          animationStatus = 0;
+        });
+      }
+     });
+  }
+
+  @override
+  void dispose() {
+    _loginButtonController.dispose();
+    super.dispose();
+  }
+
+  Future<Null> _playAnimation() async {
+    try {
+      _onLogin();
+      await _loginButtonController.forward();
+      await _loginButtonController.reverse();
+      
+    } on TickerCanceled {}
+  }
+
+  final _formKey = new GlobalKey<FormState>();
 
   void _changeFormToLogin() {
     _formKey.currentState.reset();
   }
 
-  void _onLogin() {
+  void _onLogin() async{
     final form = _formKey.currentState;
     form.save();
-    var data = {"username": "test", "password": "test"};
-    var instance = Http.getInstance();
-    instance.post("/login", data, success: (vaue) => print(vaue));
 
     if (_userID == '') {
       _showMessageDialog('账号不可为空');
+      _loginButtonController.stop();
+       
       return;
     }
     if (_password == '') {
+      
       _showMessageDialog('密码不可为空');
+      _loginButtonController.stop();
       return;
     }
+    var userViewModel = UserViewModel.curr;
+    userViewModel.login(_userID, _password,"",success: (json) {
+      Navigator.pop(context);
+    },fail: (reason, code) {
+      _showMessageDialog('账号或密码错误');
+    });
+    
+
   }
 
   void _showMessageDialog(String message) {
@@ -149,21 +195,20 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            Container(
-              height: 70,
-              padding: const EdgeInsets.fromLTRB(35, 30, 35, 0),
-              child: OutlineButton(
-                child: Text('登录'),
-                textColor: Colors.orange,
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                borderSide: BorderSide(color: Colors.orange, width: 1),
-                onPressed: () {
-                  _onLogin();
-                },
-              ),
-            ),
+            animationStatus == 0
+                ? new Padding(
+                    padding: const EdgeInsets.only(bottom: 50.0),
+                    child: new InkWell(
+                        onTap: () {
+                          setState(() {
+                            animationStatus = 1;
+                          });
+                          _playAnimation();
+                        },
+                        child: new SignIn()),
+                  )
+                : new StaggerAnimation(
+                    buttonController: _loginButtonController.view),
             Padding(
               padding: const EdgeInsets.fromLTRB(40, 10, 50, 0),
               child: Row(

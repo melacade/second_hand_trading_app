@@ -4,6 +4,7 @@ import 'package:second_hand_trading_app/view/login_page.dart';
 import 'package:second_hand_trading_app/view/main_page.dart';
 import 'package:second_hand_trading_app/view/search_page.dart';
 import 'package:second_hand_trading_app/view/splash_page.dart';
+import 'package:second_hand_trading_app/view/user_info_page.dart';
 
 class Routes {
   static const String splashPage = "/";
@@ -11,6 +12,7 @@ class Routes {
   static const String searchPage = "/searchPage";
   static const String loginPage = "/loginPage";
   static const String detailPage = "/detailPage";
+  static const String userInofPage = "/userInfoPage";
 
   static Route findRoutes(RouteSettings settings) {
     final String name = settings.name;
@@ -36,6 +38,10 @@ class Routes {
         break;
       case detailPage:
         page = DetailPage(arguments);
+        break;
+
+      case userInofPage:
+        page = UserInfoPage();
         break;
       default:
         page = MainPage();

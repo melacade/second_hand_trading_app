@@ -6,13 +6,10 @@ class ProviderWidget<T extends ChangeNotifier> extends StatefulWidget {
   final T model;
   final Widget child;
   final Function(T) onReady;
+  bool exist = false;
 
-  ProviderWidget({
-    this.model,
-    this.child,
-    this.onReady,
-    this.builder,
-  });
+  ProviderWidget(
+      {this.model, this.child, this.onReady, this.builder, this.exist = false});
 
   @override
   _ProviderWidgetState<T> createState() => _ProviderWidgetState<T>();
@@ -30,6 +27,15 @@ class _ProviderWidgetState<T extends ChangeNotifier>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.exist) {
+      return ChangeNotifierProvider<T>.value(
+        value: widget.model,
+        child: Consumer<T>(
+          builder: widget.builder,
+          child: widget.child,
+        ),
+      );
+    }
     return ChangeNotifierProvider<T>(
       create: (_) => widget.model,
       child: Consumer<T>(

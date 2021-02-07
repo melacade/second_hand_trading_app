@@ -47,7 +47,7 @@ class UserData {
     data['id'] = this.id;
     data['phone'] = this.phone;
     data['avator'] = this.avator;
-    data['authTime'] = this.authTime;
+    data['auth_time'] = this.authTime;
     data['name'] = this.name;
     data['token'] = this.token;
     return data;

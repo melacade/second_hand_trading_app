@@ -25,6 +25,9 @@ class DatabaseUtils{
   }
 
   addNewLogin(UserData user) async{
+    if(user == null){
+      return;
+    }
     await initDB();
     await _db.insert("user", user.toJson());
     log(user.toJson().toString());
@@ -48,15 +51,22 @@ class DatabaseUtils{
 
   deleteUser() async{
     UserData user = await findCurUSer();
+    if(user.id == null){
+      return;
+    }
     await initDB();
-    _db.delete("user",where: "id=${user.id}");
+    _db.delete("user",where: "id='${user.id}'");
     await _db.close();
   }
 
   updateCurUser(UserData user) async {
-    UserData user = await findCurUSer();
+    UserData user2 = await findCurUSer();
+    if(user2.id != user.id){
+      log("错误的更新");
+      return;
+    }
     await initDB();
-    _db.update("user", user.toJson());
+    await _db.update("user", user.toJson());
     await _db.close();
   }
 
