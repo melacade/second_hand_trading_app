@@ -72,4 +72,23 @@ class UserViewModel extends BaseViewModel {
       fail(reason, code);
     });
   }
+
+  void register(String account,String phone, String name, String password, String salt,{Success success, Fail fail}) async{
+    await UserApi.register(account,phone,name,password,salt, success: (data) async{
+      var user = UserBean.fromJson(data);
+      log(user.data.toString());
+      if (user.code == 200) {
+        userBean = user;
+        await databaseUtils.addNewLogin(user.data);
+        
+        if (success != null) {
+          success(data);
+        }
+      }
+    }, fail: (reason, code) {
+      log(reason);
+      fail(reason, code);
+    });
+
+  }
 }

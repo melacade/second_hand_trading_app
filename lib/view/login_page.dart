@@ -152,7 +152,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           backgroundColor: Colors.white,
           middle: const Text('登录'),
           leading: TextButton(
-              onPressed: null,
+              onPressed: (){
+                Navigator.pushNamed(context, "/registerPage");
+              },
               child: Text(
                 "注册",
                 style: TextStyle(color: Colors.black),

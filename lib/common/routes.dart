@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:second_hand_trading_app/view/DetailPage.dart';
 import 'package:second_hand_trading_app/view/login_page.dart';
 import 'package:second_hand_trading_app/view/main_page.dart';
+import 'package:second_hand_trading_app/view/register_page.dart';
 import 'package:second_hand_trading_app/view/search_page.dart';
 import 'package:second_hand_trading_app/view/splash_page.dart';
 import 'package:second_hand_trading_app/view/user_info_page.dart';
@@ -13,6 +14,7 @@ class Routes {
   static const String loginPage = "/loginPage";
   static const String detailPage = "/detailPage";
   static const String userInofPage = "/userInfoPage";
+  static const String registerPage = "/registerPage";
 
   static Route findRoutes(RouteSettings settings) {
     final String name = settings.name;
@@ -42,6 +44,9 @@ class Routes {
 
       case userInofPage:
         page = UserInfoPage();
+        break;
+      case registerPage:
+        page = RegisterPage();
         break;
       default:
         page = MainPage();

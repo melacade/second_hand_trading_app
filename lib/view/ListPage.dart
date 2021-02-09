@@ -13,6 +13,7 @@ class ListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        
         title: SearchBar(),
       ),
       body: Center(

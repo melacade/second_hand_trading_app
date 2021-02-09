@@ -11,9 +11,9 @@ typedef After = void Function();
 class UserApi {
   static var _https = Http.getInstance();
 
-  static Future<void> login(
-      String username, String password, String token, Success success, Fail fail) async {
-    var data = {"username": username, "password": password, "token" : token};
+  static Future<void> login(String username, String password, String token,
+      Success success, Fail fail) async {
+    var data = {"username": username, "password": password, "token": token};
 
     await _https.post("/login", data,
         success: (data) => {
@@ -26,8 +26,17 @@ class UserApi {
     await _https.get("/logout", null, success: success, fail: fail);
   }
 
-  static Future<void> register(data) {
-    return _https.get("/api/user/regiseter", data);
+  static Future<void> register(
+      String account, String phone, String name, String password, String salt,
+      {Success success, Fail fail}) async {
+    Map<String, dynamic> map = Map();
+    map['account'] = account;
+    map['phone'] = phone;
+    map['password'] = password;
+    map['name'] = name;
+    map['salt'] = salt;
+    await _https.post("/api/user/register", map,success: success,fail: fail);
+    return Future.value();
   }
 
   static Future<void> uploadAvatar(File file,
@@ -39,11 +48,10 @@ class UserApi {
 
     ///通过FormData
     FormData formData = FormData.fromMap(map);
-    await _https.post(uploadPath, formData, success: (data){
+    await _https.post(uploadPath, formData, success: (data) {
       log(data.toString());
       if (success != null) {
-        
-       success(data);
+        success(data);
       }
     });
     return Future.value();

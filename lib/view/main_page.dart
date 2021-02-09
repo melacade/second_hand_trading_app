@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:second_hand_trading_app/view/ListPage.dart';
+import 'package:second_hand_trading_app/view/add_new_security_problem.dart';
 import 'package:second_hand_trading_app/view/personal_center.dart';
+import 'package:second_hand_trading_app/view/register_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -20,7 +22,8 @@ class _MainPageState extends State<MainPage> {
         index: _currentIndex,
         children: <Widget>[
           ListPage(1),
-          ListPage(2),
+          
+          AddNewSecurityProblem(),
           PersonalCenter(),
         ],
       ),

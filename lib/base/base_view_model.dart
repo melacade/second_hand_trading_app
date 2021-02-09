@@ -9,6 +9,8 @@ class BaseViewModel extends ChangeNotifier {
 
   void loaded() {
     this.loading = false;
-    notifyListeners();
+    if(this.hasListeners){
+      notifyListeners();
+    }
   }
 }

@@ -40,56 +40,54 @@ class Http {
       {Success success, Fail fail, After after}) {
     try {
       _dio.get(uri, queryParameters: params).then((response) {
-      if (response.statusCode == 200) {
-        if (success != null) {
-          success(response.data);
+        if (response.statusCode == 200) {
+          if (success != null) {
+            success(response.data);
+          }
+        } else {
+          if (fail != null) {
+            fail(response.statusMessage, response.statusCode);
+          }
         }
-      } else {
-        if (fail != null) {
-          fail(response.statusMessage, response.statusCode);
-        }
-      }
 
-      if (after != null) {
-        after();
-      }
-    });
+        if (after != null) {
+          after();
+        }
+      });
     } catch (e) {
       if (fail != null) {
-          fail("没有网络", -1);
-        }
+        fail("没有网络", -1);
+      }
     }
     return Future.value();
   }
 
   Future<void> post(String uri, dynamic data,
       {Success success, Fail fail, After after}) {
-        if(UserViewModel.userBean?.data?.token !=null){
-          _dio.options.headers["X-token"] = UserViewModel.userBean?.data?.token;
-        }
-    try{
+    if (UserViewModel.userBean?.data?.token != null) {
+      _dio.options.headers["X-token"] = UserViewModel.userBean?.data?.token;
+    }
+    try {
       _dio.post(uri, data: data).then((response) {
-      if (response.statusCode == 200) {
-        if (success != null) {
-          success(response.data);
+        if (response.statusCode == 200) {
+          if (success != null) {
+            success(response.data);
+          }
+        } else {
+          if (fail != null) {
+            fail(response.statusMessage, response.statusCode);
+          }
         }
-      } else {
-        if (fail != null) {
-          fail(response.statusMessage, response.statusCode);
-        }
-      }
 
-      if (after != null) {
-        after();
-      }
-    });
-    }catch(e){
-      if(fail!=null){
-        fail("没有网络",-1);
+        if (after != null) {
+          after();
+        }
+      });
+    } catch (e) {
+      if (fail != null) {
+        fail("没有网络", -1);
       }
     }
     return Future.value();
   }
-
-
 }
