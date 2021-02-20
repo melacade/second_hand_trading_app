@@ -23,7 +23,7 @@ class _MainPageState extends State<MainPage> {
         children: <Widget>[
           ListPage(1),
           
-          AddNewSecurityProblem(),
+          ListPage(2),
           PersonalCenter(),
         ],
       ),

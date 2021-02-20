@@ -24,6 +24,7 @@ class _ProviderWidgetState<T extends ChangeNotifier>
       widget.onReady(widget.model);
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {

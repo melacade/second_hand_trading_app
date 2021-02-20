@@ -14,6 +14,9 @@ class UserViewModel extends BaseViewModel {
   static UserBean userBean = UserBean();
   static UserViewModel curr = UserViewModel();
   DatabaseUtils databaseUtils = DatabaseUtils();
+  UserViewModel(){
+    curr = this;
+  }
 
   void loadData() async {
     this.load();

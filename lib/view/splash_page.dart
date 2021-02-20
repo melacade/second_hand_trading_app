@@ -42,7 +42,6 @@ class _SplashPage extends State<SplashPage> {
         var findCurUSer = await dbUtil.findCurUSer();
         if (findCurUSer?.token != null) {
           await UserApi.login("", "", findCurUSer.token,(json) async {
-            
             var userBean = UserBean.fromJson(json);
             log(userBean.message);
             log("${userBean.code}");

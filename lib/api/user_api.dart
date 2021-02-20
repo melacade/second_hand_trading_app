@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:second_hand_trading_app/model/noaml_response.dart';
 import 'package:second_hand_trading_app/utils/http/http_utils.dart';
 
 typedef Success = void Function(dynamic json);
@@ -35,7 +36,7 @@ class UserApi {
     map['password'] = password;
     map['name'] = name;
     map['salt'] = salt;
-    await _https.post("/api/user/register", map,success: success,fail: fail);
+    await _https.post("/api/user/register", map, success: success, fail: fail);
     return Future.value();
   }
 
@@ -54,6 +55,30 @@ class UserApi {
         success(data);
       }
     });
+    return Future.value();
+  }
+
+  static Future<void> addNewSecurityProblem(String problem1, String problem2,
+      String problem3, String answer1, String answer2, String answer3,
+      {Success success, Fail fail}) async {
+    List<Map<String, dynamic>> list = List();
+    list.add({"question": problem1, "answer": answer1});
+    list.add({
+      "question": problem2,
+      "answer": answer2,
+    });
+    list.add({"question": problem3, "answer": answer3});
+    await _https.post("/api/user/createSecurityQuestion", list,
+        success: (data) {
+      var res = NomalResponse.fromJson(data);
+      if (res.code == 200) {
+        if (success != null) success(res.data);
+        log(res.message);
+      } else {
+        log(res.message);
+        if (fail != null) fail(res.message, res.code);
+      }
+    }, fail: (data, code) {});
     return Future.value();
   }
 }

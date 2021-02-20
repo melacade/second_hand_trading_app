@@ -48,7 +48,10 @@ class _RegisterPageState extends State<RegisterPage> {
     
     var userViewModel = UserViewModel.curr;
     userViewModel.register(_account,_phone,_name,_password1,_salt,success: (json) {
-      Navigator.pushReplacementNamed(context, Routes.mainPage);
+      Navigator.popUntil(context, (route){
+        return route.settings.name == Routes.mainPage;
+      });
+      Navigator.pushNamed(context, Routes.addNewSecurityProblem);
     },fail: (reason, code) {
       _showMessageDialog('账号或密码错误');
     });
