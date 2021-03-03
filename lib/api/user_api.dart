@@ -72,7 +72,7 @@ class UserApi {
         success: (data) {
       var res = NomalResponse.fromJson(data);
       if (res.code == 200) {
-        if (success != null) success(res.data);
+        if (success != null) success(res.message);
         log(res.message);
       } else {
         log(res.message);
@@ -80,5 +80,45 @@ class UserApi {
       }
     }, fail: (data, code) {});
     return Future.value();
+  }
+
+  static void checkSecurityProblem({Success success, Fail fail}) async {
+    await _https.get("/api/user/checkSecuriy", null, success: (data) {
+      var res = NomalResponse.fromJson(data);
+      if (res.code == 200) {
+        if (success != null) {
+          success(data);
+        }
+        log("检查到有密保问题");
+      }else{
+        if(fail != null){
+          fail(res.message,res.code);
+        }
+        log("检查到没有密保问题");
+      }
+    }, fail: (message, code) {});
+  }
+
+  static void checkPaymentPDW({Success success}) async{
+    await _https.get("/api/user/checkPaymentSecurity", null, success: (data) {
+      var res = NomalResponse.fromJson(data);
+      if (res.code == 200) {
+        if (success != null) {
+          success(data);
+        }
+        log("支付密码检测成功");
+      }
+    }, fail: (message, code) {});
+  }
+
+  static void validateProblems(dynamic problems,{Success success}) {
+     _https.post("/api/user/validateProblems", problems,
+        success: (data) {
+      var res = NomalResponse.fromJson(data);
+      if (res.code == 200) {
+        if (success != null) success(res.data);
+        log(res.message);
+      } 
+    }, fail: (data, code) {});
   }
 }

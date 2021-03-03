@@ -26,7 +26,7 @@ class _SearchBarState extends State<SearchBar> {
                 border: InputBorder.none,
                 isDense: true,
                 hintText:
-                    this._searchAdvice == null ? "搜索" : this._searchAdvice,
+                    this._searchAdvice == null ? "Search" : this._searchAdvice,
               ),
               style: TextStyle(
                 fontSize: 20,

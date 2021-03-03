@@ -1,16 +1,20 @@
 class Consts {
   static List<String> securityProblems = const [
-    "你父母亲的姓名",
-    "你的生日",
-    "你毕业于哪个初中",
-    "你喜欢看的电影",
-    "你的第一只宠物",
-    "你的第一份工作",
-    "你最好的朋友的名字",
-    "你最崇拜的人"
+    "Your parents' names",
+    "Your birthday",
+    "Which junior high school did you graduate from",
+    "What movies do you like to watch",
+    "Your first pet",
+    "Your first job",
+    "The name of your best friend",
+    "The person you admire the most"
 
     ];
     
     static const String changePassword = "changePassword";
     static const String changeSecurityProblem = "changeSecurityProblem";
+
+  static const String changePayment = "changePyment";
+
+  static const String addPayment = "addPayment";
 }

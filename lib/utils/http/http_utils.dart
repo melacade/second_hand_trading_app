@@ -39,6 +39,11 @@ class Http {
   Future<void> get(String uri, Map<String, dynamic> params,
       {Success success, Fail fail, After after}) {
     try {
+      if (UserViewModel.userBean?.data?.token != null) {
+        _dio.options.headers["X-token"] = UserViewModel.userBean?.data?.token;
+      } else {
+        _dio.options.headers.remove("X-token");
+      }
       _dio.get(uri, queryParameters: params).then((response) {
         if (response.statusCode == 200) {
           if (success != null) {
@@ -66,6 +71,8 @@ class Http {
       {Success success, Fail fail, After after}) {
     if (UserViewModel.userBean?.data?.token != null) {
       _dio.options.headers["X-token"] = UserViewModel.userBean?.data?.token;
+    } else {
+      _dio.options.headers.remove("X-token");
     }
     try {
       _dio.post(uri, data: data).then((response) {

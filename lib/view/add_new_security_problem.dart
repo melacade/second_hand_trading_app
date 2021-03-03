@@ -29,12 +29,58 @@ class _AddNewSecurityProblemState extends State<AddNewSecurityProblem> {
     return list;
   }
 
+  void _onSubmit() {
+    if(_problem1 == null || _problem2 == null || _problem3 == null){
+      _showMessage("Please select the security question completely!",false);
+      return;
+    }
+    if(_answer1 == null || _answer2 == null || _answer3 == null){
+      _showMessage("Please fill in the questions completely", false);
+    }
+
+    UserApi.addNewSecurityProblem(
+        _problem1, _problem2, _problem3, _answer1, _answer2, _answer3,
+        success: (data) {
+        _showMessage(data, true);
+    }, fail: (message, code) {
+        _showMessage(message, true);
+        
+    });
+  }
+
+  void _showMessage(String message,bool back){
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          // return object of type Dialog
+          return AlertDialog(
+            title: new Text('Tips'),
+            content: new Text(message),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text("ok"),
+                onPressed: () {
+                  if(back){
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  }else{
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+            ],
+          );
+        },
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "添加安全凭证",
+          "Add New Security Problems",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -57,19 +103,20 @@ class _AddNewSecurityProblemState extends State<AddNewSecurityProblem> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Text("问题1"),
+                  child: Text("Promblem"),
                 ),
                 Expanded(
                   flex: 4,
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton(
                       items: _items(),
-                      hint: Text('请选择'),
+                      hint: Text('Please select'),
                       onChanged: (value) {
                         setState(() {
                           _problem1 = value;
                         });
                       },
+                      isExpanded: true,
                       value: _problem1,
                       style: TextStyle(
                         //设置文本框里面文字的样式
@@ -101,19 +148,20 @@ class _AddNewSecurityProblemState extends State<AddNewSecurityProblem> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Text("问题2"),
+                  child: Text("Problem"),
                 ),
                 Expanded(
                   flex: 4,
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton(
                       items: _items(),
-                      hint: Text('请选择'),
+                      hint: Text('Please select'),
                       onChanged: (value) {
                         setState(() {
                           _problem2 = value;
                         });
                       },
+                      isExpanded: true,
                       value: _problem2,
                       style: TextStyle(
                         //设置文本框里面文字的样式
@@ -145,19 +193,20 @@ class _AddNewSecurityProblemState extends State<AddNewSecurityProblem> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Text("问题3"),
+                  child: Text("Problem"),
                 ),
                 Expanded(
                   flex: 4,
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton(
                       items: _items(),
-                      hint: Text('请选择'),
+                      hint: Text('Please select'),
                       onChanged: (value) {
                         setState(() {
                           _problem3 = value;
                         });
                       },
+                      isExpanded: true,
                       value: _problem3,
                       style: TextStyle(
                         //设置文本框里面文字的样式
@@ -190,15 +239,16 @@ class _AddNewSecurityProblemState extends State<AddNewSecurityProblem> {
                 Expanded(
                   child: FlatButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, Routes.mainPage);
+                      Navigator.pop(context);
                     },
                     child: ProviderWidget<UserViewModel>(
                       model: UserViewModel.curr,
                       onReady: (model) => {model.loadData()},
+                      exist: true,
                       builder: (context, model, child) {
                         return Text(UserViewModel.userBean.data?.id == null
-                            ? "跳过"
-                            : "取消");
+                            ? "Skip"
+                            : "Cancle");
                       },
                     ),
                     color: Colors.red,
@@ -207,40 +257,9 @@ class _AddNewSecurityProblemState extends State<AddNewSecurityProblem> {
                 Expanded(
                   child: FlatButton(
                     onPressed: () {
-                      UserApi.addNewSecurityProblem(
-                          _problem1,
-                          _problem2,
-                          _problem3,
-                          _answer1,
-                          _answer2,
-                          _answer3, success: (data) {
-                        Navigator.pushReplacementNamed(
-                            context, Routes.mainPage);
-                      }, fail: (message, code) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            // return object of type Dialog
-                            return AlertDialog(
-                              title: new Text('提示'),
-                              content: new Text(message),
-                              actions: <Widget>[
-                                new FlatButton(
-                                  child: new Text("ok"),
-                                  onPressed: () {
-                                    Navigator.popUntil(context, (route){
-                                      log(route.settings.name);
-                                      return route.settings.name == Routes.mainPage;
-                                    });
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      });
+                      _onSubmit();
                     },
-                    child: Text("完成"),
+                    child: Text("Finished"),
                     color: Colors.blue,
                   ),
                 ),

@@ -13,7 +13,7 @@ class SignIn extends StatelessWidget {
         borderRadius: new BorderRadius.all(const Radius.circular(30.0)),
       ),
       child: new Text(
-        "登录",
+        "Log in",
         style: new TextStyle(
           color: Colors.white,
           fontSize: 20.0,

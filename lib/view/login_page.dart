@@ -63,14 +63,14 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     form.save();
 
     if (_userID == '') {
-      _showMessageDialog('账号不可为空');
+      _showMessageDialog('Account number cannot be empty');
       _loginButtonController.stop();
        
       return;
     }
     if (_password == '') {
       
-      _showMessageDialog('密码不可为空');
+      _showMessageDialog('Password cannot be empty');
       _loginButtonController.stop();
       return;
     }
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     userViewModel.login(_userID, _password,"",success: (json) {
       Navigator.pop(context);
     },fail: (reason, code) {
-      _showMessageDialog('账号或密码错误');
+      _showMessageDialog('Wrong account or password');
     });
     
 
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text('提示'),
+          title: new Text('Tips'),
           content: new Text(message),
           actions: <Widget>[
             new FlatButton(
@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         style: TextStyle(fontSize: 50.ssp),
         decoration: new InputDecoration(
             border: InputBorder.none,
-            hintText: '请输入帐号',
+            hintText: 'Please enter the account number',
             icon: new Icon(
               Icons.email,
               color: Colors.grey,
@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         style: TextStyle(fontSize: 50.ssp),
         decoration: new InputDecoration(
             border: InputBorder.none,
-            hintText: '请输入密码',
+            hintText: 'Please input a password',
             icon: new Icon(
               Icons.lock,
               color: Colors.grey,
@@ -150,18 +150,18 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     return Scaffold(
         appBar: CupertinoNavigationBar(
           backgroundColor: Colors.white,
-          middle: const Text('登录'),
+          middle: const Text('Sign in'),
           leading: TextButton(
               onPressed: (){
                 Navigator.pushNamed(context, "/registerPage");
               },
               child: Text(
-                "注册",
+                "Register",
                 style: TextStyle(color: Colors.black),
               )),
           trailing: TextButton(
             child: Text(
-              "找回",
+              "Retrieve",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -232,18 +232,18 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   Expanded(
                     child: RichText(
                         text: TextSpan(
-                            text: '我已经详细阅读并同意',
+                            text: 'I have read it in detail and agree',
                             style: TextStyle(
                                 color: Colors.black, fontSize: 50.ssp),
                             children: <TextSpan>[
                           TextSpan(
-                              text: '《隐私政策》',
+                              text: ' Privacy policy',
                               style: TextStyle(
                                   color: Colors.blue,
                                   decoration: TextDecoration.underline)),
-                          TextSpan(text: '和'),
+                          TextSpan(text: ' and '),
                           TextSpan(
-                              text: '《用户协议》',
+                              text: 'User agreement',
                               style: TextStyle(
                                   color: Colors.blue,
                                   decoration: TextDecoration.underline))

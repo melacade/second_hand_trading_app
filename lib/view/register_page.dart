@@ -24,36 +24,35 @@ class _RegisterPageState extends State<RegisterPage> {
     form.save();
 
     if (_account == ''||_account.length < 5 || _account.length>10|| _account.contains(" ")) {
-      _showMessageDialog('账号长度需要在5到10之间，且不包含空格');
+      _showMessageDialog('Account length should be between 5 and 10, and does not contain spaces');
       return;
     }
     if(_phone == ''|| !_phoneReg.hasMatch(_phone)){
-      _showMessageDialog('手机号不合法');
+      _showMessageDialog('Illegal mobile phone number');
       return;
     }
     if(_name == ''|| _name.length < 3 || _name.length > 10 ){
-       _showMessageDialog('昵称长度需要在3到10之间，切不包含空格');
+       _showMessageDialog('The length of the nickname should be between 3 and 10, without spaces');
       return;
     }
     if (_password1 == ''|| _password1.length < 6 || _password1.length > 11) {
       
-      _showMessageDialog('密码长度需要在6到11之间');
+      _showMessageDialog('The password length needs to be between 6 and 11');
       
       return;
     }
     if(_password2 == ''|| _password2 != _password1){
-     _showMessageDialog('两次输入的密码不一致');
+     _showMessageDialog('The two passwords are inconsistent');
       return;
     }
     
     var userViewModel = UserViewModel.curr;
     userViewModel.register(_account,_phone,_name,_password1,_salt,success: (json) {
-      Navigator.popUntil(context, (route){
-        return route.settings.name == Routes.mainPage;
-      });
+      Navigator.pop(context);
+      Navigator.pop(context);
       Navigator.pushNamed(context, Routes.addNewSecurityProblem);
     },fail: (reason, code) {
-      _showMessageDialog('账号或密码错误');
+      _showMessageDialog('Wrong account or password');
     });
     
 
@@ -65,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text('提示'),
+          title: new Text('Tips'),
           content: new Text(message),
           actions: <Widget>[
             new FlatButton(
@@ -90,7 +89,7 @@ class _RegisterPageState extends State<RegisterPage> {
         style: TextStyle(fontSize: 50.ssp),
         decoration: new InputDecoration(
             border: InputBorder.none,
-            hintText: '请输入帐号',
+            hintText: 'Please enter the account number',
             icon: new Icon(
               Icons.account_box,
               color: Colors.grey,
@@ -110,7 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
         style: TextStyle(fontSize: 50.ssp),
         decoration: new InputDecoration(
             border: InputBorder.none,
-            hintText: '请输入昵称',
+            hintText: 'Please enter a nickname',
             icon: new Icon(
               Icons.emoji_people,
               color: Colors.grey,
@@ -130,7 +129,7 @@ class _RegisterPageState extends State<RegisterPage> {
         style: TextStyle(fontSize: 50.ssp),
         decoration: new InputDecoration(
             border: InputBorder.none,
-            hintText: '请输入手机号',
+            hintText: 'Please input mobile phone number',
             icon: new Icon(
               Icons.phone_android,
               color: Colors.grey,
@@ -150,7 +149,7 @@ class _RegisterPageState extends State<RegisterPage> {
         style: TextStyle(fontSize: 50.ssp),
         decoration: new InputDecoration(
             border: InputBorder.none,
-            hintText: '请输入密码',
+            hintText: 'Please input a password',
             icon: new Icon(
               Icons.lock,
               color: Colors.grey,
@@ -170,7 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
         style: TextStyle(fontSize: 50.ssp),
         decoration: new InputDecoration(
             border: InputBorder.none,
-            hintText: '请再次输入密码',
+            hintText: 'Please enter the password again',
             icon: new Icon(
               Icons.lock,
               color: Colors.grey,
@@ -185,7 +184,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "西南交通大学二手交易平台",
+          "Second hand trading platform of Southwest Jiaotong University",
           style: TextStyle(fontSize: 50.ssp,color: Colors.black),
           //textAlign: TextAlign.center,
         ),
@@ -241,7 +240,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     width:0.7.wp,
                     child:FlatButton(onPressed: (){
                       _onSubmit();
-                    },color: Colors.pink, child: Text("注册")),
+                    },color: Colors.pink, child: Text("Signin")),
                   )
                   ],
                 ),

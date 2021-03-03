@@ -22,7 +22,6 @@ class _MainPageState extends State<MainPage> {
         index: _currentIndex,
         children: <Widget>[
           ListPage(1),
-          
           ListPage(2),
           PersonalCenter(),
         ],
@@ -35,10 +34,10 @@ class _MainPageState extends State<MainPage> {
         },
         currentIndex: _currentIndex,
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(title: Text('首页'), icon: Icon(Icons.home)),
-          BottomNavigationBarItem(title: Text('分类'), icon: Icon(Icons.class_)),
+          BottomNavigationBarItem(title: Text('Index'), icon: Icon(Icons.home)),
+          BottomNavigationBarItem(title: Text('Classification'), icon: Icon(Icons.class_)),
           BottomNavigationBarItem(
-              title: Text('我的'), icon: Icon(Icons.perm_identity)),
+              title: Text('My'), icon: Icon(Icons.perm_identity)),
         ],
       ),
     );

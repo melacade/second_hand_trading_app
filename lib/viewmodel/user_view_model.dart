@@ -50,7 +50,7 @@ class UserViewModel extends BaseViewModel {
     UserApi.logout(success: (data) async {
       await databaseUtils.deleteUser();
       userBean.data = UserData();
-      userBean.data.name = "未登录";
+      userBean.data.name = "Not logged in";
       userBean.data.avator = "default";
       this.loaded();
       success(data);
@@ -92,6 +92,7 @@ class UserViewModel extends BaseViewModel {
       log(reason);
       fail(reason, code);
     });
-
   }
+
+  
 }

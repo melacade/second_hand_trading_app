@@ -18,7 +18,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
     return Scaffold(
       appBar: CupertinoNavigationBar(
         middle: Text(
-          "我的",
+          "My",
           style: TextStyle(fontSize: 60.ssp),
         ),
       ),
@@ -49,14 +49,14 @@ class _PersonalCenterState extends State<PersonalCenter> {
             child: Column(
               children: <Widget>[
                 ListTile(
-                  title: Text('修改个人资料', textAlign: TextAlign.center),
+                  title: Text('Modify personal data', textAlign: TextAlign.center),
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.pushNamed(context, Routes.userInofPage);
                   },
                 ),
                 ListTile(
-                  title: Text('退出登录', textAlign: TextAlign.center),
+                  title: Text('Log out', textAlign: TextAlign.center),
                   onTap: () {
                     UserViewModel.curr.logOut(
                       success: (data) {
@@ -69,7 +69,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
                   },
                 ),
                 ListTile(
-                  title: Text('取消', textAlign: TextAlign.center),
+                  title: Text('Cancel', textAlign: TextAlign.center),
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -78,6 +78,28 @@ class _PersonalCenterState extends State<PersonalCenter> {
             ),
           );
         });
+  }
+
+  void navTo(String title){
+    if(UserViewModel.userBean.data.id == null){
+       Navigator.pushNamed(context, Routes.loginPage);
+       return;
+    }
+    switch (title) {
+            case "Receiving address management":
+              break;
+            case "Account and security":
+              Navigator.pushNamed(context, Routes.securityCenter);
+              break;
+            case "Coupon":
+              break;
+            case "Contact customer service":
+              break;
+            case "About us":
+              break;
+            default:
+              break;
+      }
   }
 
   Widget _topHeader(UserBean user) {
@@ -114,7 +136,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
           ),
           Container(
             margin: EdgeInsets.only(top: 9),
-            child: Text(user.data == null ? "点击登录" : user.data.name),
+            child: Text(user.data == null ? "Click login" : user.data.name),
           )
         ],
       ),
@@ -138,7 +160,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
                   Icons.library_books,
                   size: 0.05.hp,
                 ),
-                Text("我的订单")
+                Text("My order")
               ],
             ),
           ),
@@ -150,7 +172,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
                   Icons.payment,
                   size: 0.05.hp,
                 ),
-                Text("待付款")
+                Text("To be paid")
               ],
             ),
           ),
@@ -162,7 +184,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
                   Icons.card_travel,
                   size: 0.05.hp,
                 ),
-                Text("待收货")
+                Text("To be received")
               ],
             ),
           ),
@@ -174,7 +196,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
                   Icons.strikethrough_s,
                   size: 0.05.hp,
                 ),
-                Text("退换/售后")
+                Text("Return")
               ],
             ),
           ),
@@ -186,7 +208,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
                   Icons.content_paste,
                   size: 0.05.hp,
                 ),
-                Text("待评价")
+                Text("Evaluating")
               ],
             ),
           )
@@ -200,11 +222,11 @@ class _PersonalCenterState extends State<PersonalCenter> {
       margin: EdgeInsets.only(top: 3),
       child: Column(
         children: <Widget>[
-          _myListTitle('收货地址管理'),
-          _myListTitle('账户与安全'),
-          _myListTitle('优惠券'),
-          _myListTitle('联系客服'),
-          _myListTitle('关于我们'),
+          _myListTitle('Receiving address management'),
+          _myListTitle('Account and security'),
+          _myListTitle('Coupon'), //优惠券
+          _myListTitle('Contact customer service'),
+          _myListTitle('About us'),
         ],
       ),
     );
@@ -219,6 +241,9 @@ class _PersonalCenterState extends State<PersonalCenter> {
         leading: Icon(Icons.blur_on),
         title: Text(title),
         trailing: Icon(Icons.chevron_right),
+        onTap: () {
+          navTo(title);
+        },
       ),
     );
   }

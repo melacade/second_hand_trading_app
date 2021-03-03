@@ -42,7 +42,7 @@ class DatabaseUtils{
       user = UserData.fromJson(list.first);
     }else{
       user = UserData();
-      user.name = "未登录";
+      user.name = "Not logged in";
       user.avator = "default";
     }
     await _db.close();

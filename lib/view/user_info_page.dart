@@ -5,10 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:second_hand_trading_app/api/user_api.dart';
 import 'package:second_hand_trading_app/base/provider_wedget.dart';
 import 'package:second_hand_trading_app/model/user.dart';
-import 'package:second_hand_trading_app/utils/database/database_utils.dart';
 import 'package:second_hand_trading_app/utils/http/http_utils.dart';
 import 'package:second_hand_trading_app/viewmodel/user_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,7 +43,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
     return Scaffold(
       appBar: CupertinoNavigationBar(
         middle: Text(
-          "修改个人信息",
+          "Modify personal information",
           style: TextStyle(fontSize: 60.ssp),
         ),
       ),
@@ -75,7 +73,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
             height: 0.5.hp,
             alignment: Alignment.bottomCenter,
             child: FlatButton(
-              child: Text("保存修改"),
+              child: Text("Save changes"),
               color: Colors.black12,
               onPressed: () {},
             ),
@@ -90,8 +88,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
       margin: EdgeInsets.only(top: 3),
       child: Column(
         children: <Widget>[
-          _myListTitle('用户昵称', user),
-          _myListTitle('手机号码', user),
+          _myListTitle('User nickname', user),
+          _myListTitle('Phone number', user),
         ],
       ),
     );
@@ -104,14 +102,14 @@ class _UserInfoPageState extends State<UserInfoPage> {
           border: Border(bottom: BorderSide(width: 1, color: Colors.black12))),
       child: TextField(
         decoration: InputDecoration(
-          icon: title == "用户昵称" ? Icon(Icons.person) : Icon(Icons.phone),
+          icon: title == "User nickname" ? Icon(Icons.person) : Icon(Icons.phone),
 
           // labelText: title,
           // hintText: "hintText",
           prefixText: title + " ",
         ),
         controller: TextEditingController(
-            text: title == "用户昵称" ? user.data.name : user.data.phone),
+            text: title == "User nickname" ? user.data.name : user.data.phone),
       ),
     );
   }
@@ -146,7 +144,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
             onPressed: () {
               getImage();
             },
-            child: Text("更换头像"),
+            child: Text("Change the avatar"),
             color: Colors.black12,
           )
         ],
