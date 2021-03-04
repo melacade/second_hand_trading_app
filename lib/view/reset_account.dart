@@ -50,25 +50,35 @@ class _ResetAccountState extends State<ResetAccount> {
   }
 
   void _onSubmit() {
-
     for (int i = 0; i < 3; i++) {
       if (widget.args['problems']?.data[i]?.answer == null) {
-        _showMessage("Please fill the problems completly" );
+        _showMessage("Please fill the problems completly");
         return;
       }
     }
 
     UserApi.validateProblems(widget.args['problems'].data, success: (data) {
-      if(data){
+      if (data) {
         switch (widget.args['action']) {
-        case Consts.changePassword:
-          log("change pwd");
-          break;
-        case Consts.changeSecurityProblem:
-          break;
-        default:
-      }
-      }else{
+          case Consts.changePassword:
+            log("change pwd");
+            break;
+          case Consts.changeSecurityProblem:
+            log("change securityProblem");
+            Navigator.pop(context);
+            Navigator.pushNamed(context, Routes.resetSecurityProblems);
+            break;
+            case Consts.addPayment:
+            Navigator.pop(context);
+            Navigator.pushNamed(context, Routes.addPayment);
+            break;
+            case Consts.resetPayment:
+            Navigator.pop(context);
+            Navigator.pushNamed(context, Routes.resetPayment);
+            break;
+          default:
+        }
+      } else {
         _showMessage("There are one or more wrong security problems!");
       }
     });
@@ -175,7 +185,6 @@ class _ResetAccountState extends State<ResetAccount> {
                   ),
                 ),
                 onChanged: (value) {
-
                   widget.args['problems'].data[1].answer = value;
                 },
               ),

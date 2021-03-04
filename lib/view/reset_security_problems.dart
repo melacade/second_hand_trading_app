@@ -8,14 +8,13 @@ import 'package:second_hand_trading_app/base/provider_wedget.dart';
 import 'package:second_hand_trading_app/common/routes.dart';
 import 'package:second_hand_trading_app/viewmodel/user_view_model.dart';
 
-class AddNewSecurityProblem extends StatefulWidget {
-  AddNewSecurityProblem({this.args});
-  var args;
+class ResetSecurityProblems extends StatefulWidget {
+
   @override
-  _AddNewSecurityProblemState createState() => _AddNewSecurityProblemState();
+  _ResetSecurityProblemsState createState() => _ResetSecurityProblemsState();
 }
 
-class _AddNewSecurityProblemState extends State<AddNewSecurityProblem> {
+class _ResetSecurityProblemsState extends State<ResetSecurityProblems> {
   String _problem1;
   String _problem2;
   String _problem3;
@@ -36,16 +35,16 @@ class _AddNewSecurityProblemState extends State<AddNewSecurityProblem> {
       _showMessage("Please select the security question completely!", false);
       return;
     }
-    if (_answer1 == null || _answer2 == null || _answer3 == null||(widget.args != null && _password != null)) {
+    if (_answer1 == null || _answer2 == null || _answer3 == null) {
       _showMessage("Please fill in the questions completely", false);
     }
 
-    UserApi.addNewSecurityProblem(
-        _problem1, _problem2, _problem3, _answer1, _answer2, _answer3,_password,
+    UserApi.resetSecurityProblem(
+        _problem1, _problem2, _problem3, _answer1, _answer2, _answer3,
         success: (data) {
       _showMessage(data, true);
     }, fail: (message, code) {
-      _showMessage(message, true);
+      _showMessage(message, false);
     });
   }
 
@@ -64,8 +63,9 @@ class _AddNewSecurityProblemState extends State<AddNewSecurityProblem> {
                 if (back) {
                   Navigator.pop(context);
                   Navigator.pop(context);
-                } else {
                   Navigator.pop(context);
+                  Navigator.pushNamed(context, Routes.securityCenter);
+                } else {
                   Navigator.pop(context);
                 }
               },
@@ -81,7 +81,7 @@ class _AddNewSecurityProblemState extends State<AddNewSecurityProblem> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Add New Security Problems",
+          "Reset Security Problems",
           style: TextStyle(
             color: Colors.black,
           ),

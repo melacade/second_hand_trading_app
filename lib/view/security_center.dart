@@ -46,7 +46,7 @@ class _SecurityCenterState extends State<SecurityCenter> {
               break;
             case "Change payment password":
               Navigator.pushNamed(context, Routes.resetAccount, arguments: {
-                'action': Consts.changePayment,
+                'action': Consts.resetPayment,
                 'problems': problems
               });
               break;

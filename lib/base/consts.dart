@@ -14,7 +14,7 @@ class Consts {
     static const String changePassword = "changePassword";
     static const String changeSecurityProblem = "changeSecurityProblem";
 
-  static const String changePayment = "changePyment";
-
+  static const String changePayment = "changePayment";
+  static const String resetPayment = "resetPayment";
   static const String addPayment = "addPayment";
 }

@@ -60,7 +60,7 @@ class UserApi {
 
   static Future<void> addNewSecurityProblem(String problem1, String problem2,
       String problem3, String answer1, String answer2, String answer3,
-      {Success success, Fail fail}) async {
+      String password, {Success success, Fail fail}) async {
     List<Map<String, dynamic>> list = List();
     list.add({"question": problem1, "answer": answer1});
     list.add({
@@ -68,7 +68,8 @@ class UserApi {
       "answer": answer2,
     });
     list.add({"question": problem3, "answer": answer3});
-    await _https.post("/api/user/createSecurityQuestion", list,
+    Map<String, dynamic> map = {'questions' : list, "password" : password};
+    await _https.post("/api/user/createSecurityQuestion", map,
         success: (data) {
       var res = NomalResponse.fromJson(data);
       if (res.code == 200) {
@@ -119,6 +120,64 @@ class UserApi {
         if (success != null) success(res.data);
         log(res.message);
       } 
+    }, fail: (data, code) {});
+  }
+
+  static void resetSecurityProblem(String problem1, String problem2, String problem3, String answer1, String answer2, String answer3, {Success success, Fail fail}) {
+    List<Map<String, dynamic>> list = List();
+    list.add({"question": problem1, "answer": answer1});
+    list.add({
+      "question": problem2,
+      "answer": answer2,
+    });
+    list.add({"question": problem3, "answer": answer3});
+    _https.post("/api/user/resetSecurityProblems", list,
+        success: (data) {
+      var res = NomalResponse.fromJson(data);
+      if (res.code == 200) {
+        if (success != null) success(res.message);
+        log(res.message);
+      } else {
+        log(res.message);
+        if (fail != null) fail(res.message, res.code);
+      }
+    }, fail: (data, code) {});
+  }
+
+  static void addPayment(String password, String payment, {Success success, Fail fail}) {
+    Map<String,dynamic> map = {
+      "password" : password,
+      "payment" : payment
+    };
+    _https.post("/api/user/addPayment", map,
+        success: (data) {
+      var res = NomalResponse.fromJson(data);
+      if (res.code == 200) {
+        if (success != null) success(res.message);
+        log(res.message);
+      } else {
+        log(res.message);
+        if (fail != null) fail(res.message, res.code);
+      }
+    }, fail: (data, code) {});
+  }
+
+  static void resetPayment(String password,String oldPayment, String payment, {Success success, Fail fail}) {
+    Map<String,dynamic> map = {
+      "password" : password,
+      "oldPayment" : oldPayment,
+      "payment" : payment
+    };
+    _https.post("/api/user/resetPayment", map,
+        success: (data) {
+      var res = NomalResponse.fromJson(data);
+      if (res.code == 200) {
+        if (success != null) success(res.message);
+        log(res.message);
+      } else {
+        log(res.message);
+        if (fail != null) fail(res.message, res.code);
+      }
     }, fail: (data, code) {});
   }
 }

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:second_hand_trading_app/view/DetailPage.dart';
 import 'package:second_hand_trading_app/view/add_new_security_problem.dart';
+import 'package:second_hand_trading_app/view/add_payment.dart';
 import 'package:second_hand_trading_app/view/login_page.dart';
 import 'package:second_hand_trading_app/view/main_page.dart';
 import 'package:second_hand_trading_app/view/register_page.dart';
 import 'package:second_hand_trading_app/view/reset_account.dart';
 import 'package:second_hand_trading_app/view/reset_password.dart';
+import 'package:second_hand_trading_app/view/reset_payment.dart';
+import 'package:second_hand_trading_app/view/reset_security_problems.dart';
 import 'package:second_hand_trading_app/view/search_page.dart';
 import 'package:second_hand_trading_app/view/security_center.dart';
 import 'package:second_hand_trading_app/view/splash_page.dart';
@@ -27,6 +30,12 @@ class Routes {
   static const String resetAccount = "/resetAccount";
 
   static const String securityCenter = "/securityCenter";
+
+  static const String resetSecurityProblems = "/resetSecurityProblems";
+
+  static const String addPayment = "/addPayment";
+
+  static const String resetPayment = "/resetPayment";
 
   static Route findRoutes(RouteSettings settings) {
     final String name = settings.name;
@@ -71,8 +80,17 @@ class Routes {
       case securityCenter:
         page = SecurityCenter();
         break;
-        case resetPassword:
+      case resetPassword:
         page = ResetPassword();
+        break;
+      case resetSecurityProblems:
+        page = ResetSecurityProblems();
+        break;
+      case addPayment:
+        page = AddPayment();
+        break;
+      case resetPayment:
+        page = ResetPayment();
         break;
       default:
         page = MainPage();
