@@ -3,6 +3,7 @@ import 'package:second_hand_trading_app/view/DetailPage.dart';
 import 'package:second_hand_trading_app/view/add_new_security_problem.dart';
 import 'package:second_hand_trading_app/view/add_payment.dart';
 import 'package:second_hand_trading_app/view/login_page.dart';
+import 'package:second_hand_trading_app/view/lost_and_found.dart';
 import 'package:second_hand_trading_app/view/main_page.dart';
 import 'package:second_hand_trading_app/view/register_page.dart';
 import 'package:second_hand_trading_app/view/reset_account.dart';
@@ -36,6 +37,8 @@ class Routes {
   static const String addPayment = "/addPayment";
 
   static const String resetPayment = "/resetPayment";
+
+  static const String lostAndFound = "/lostAndFound";
 
   static Route findRoutes(RouteSettings settings) {
     final String name = settings.name;
@@ -81,7 +84,9 @@ class Routes {
         page = SecurityCenter();
         break;
       case resetPassword:
-        page = ResetPassword();
+        page = ResetPassword(
+          args: arguments,
+        );
         break;
       case resetSecurityProblems:
         page = ResetSecurityProblems();
@@ -91,6 +96,9 @@ class Routes {
         break;
       case resetPayment:
         page = ResetPayment();
+        break;
+        case lostAndFound:
+        page = LostAndFound();
         break;
       default:
         page = MainPage();

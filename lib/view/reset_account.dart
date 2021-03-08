@@ -57,11 +57,13 @@ class _ResetAccountState extends State<ResetAccount> {
       }
     }
 
-    UserApi.validateProblems(widget.args['problems'].data, success: (data) {
+    UserApi.validateProblems(widget.args['problems'].data, account: widget.args['account'],success: (data) {
       if (data) {
         switch (widget.args['action']) {
           case Consts.changePassword:
             log("change pwd");
+            Navigator.pop(context);
+            Navigator.pushNamed(context, Routes.resetPassword, arguments: {'account':widget?.args['account']});
             break;
           case Consts.changeSecurityProblem:
             log("change securityProblem");
@@ -107,33 +109,6 @@ class _ResetAccountState extends State<ResetAccount> {
             Image(
               height: .4.hp,
               image: AssetImage("assets/images/shield.jpeg"),
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ProviderWidget<UserViewModel>(
-                  model: UserViewModel.curr,
-                  exist: true,
-                  onReady: (model) => {
-                    model.loadData(),
-                  },
-                  builder: (context, model, child) {
-                    var id = UserViewModel.userBean?.data?.id;
-                    if (id == null) {
-                      return TextField(
-                        onChanged: (value) {
-                          _account = value;
-                        },
-                      );
-                    } else {
-                      _id = id;
-                      return Padding(
-                          padding: EdgeInsets.fromLTRB(0, 10.ssp, 0, 0));
-                    }
-                  },
-                ),
-              ],
             ),
             Row(
               children: [
@@ -229,8 +204,8 @@ class _ResetAccountState extends State<ResetAccount> {
                       exist: true,
                       builder: (context, model, child) {
                         return Text(UserViewModel.userBean.data?.id == null
-                            ? "Skip"
-                            : "Cancel");
+                            ? "Cancel"
+                            : "Skip");
                       },
                     ),
                     color: Colors.red,

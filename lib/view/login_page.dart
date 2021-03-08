@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:second_hand_trading_app/api/user_api.dart';
 import 'package:second_hand_trading_app/base/provider_wedget.dart';
+import 'package:second_hand_trading_app/common/routes.dart';
 import 'package:second_hand_trading_app/utils/http/http_utils.dart';
 import 'package:second_hand_trading_app/viewmodel/user_view_model.dart';
 
@@ -164,6 +165,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               "Retrieve",
               style: TextStyle(color: Colors.black),
             ),
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.lostAndFound);
+            },
           ),
         ),
         body: ListView(

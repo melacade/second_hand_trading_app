@@ -83,8 +83,9 @@ class UserApi {
     return Future.value();
   }
 
-  static void checkSecurityProblem({Success success, Fail fail}) async {
-    await _https.get("/api/user/checkSecuriy", null, success: (data) {
+  static void checkSecurityProblem({Success success, Fail fail, String account}) async {
+
+    await _https.get("/api/user/checkSecuriy", {'account' : account}, success: (data) {
       var res = NomalResponse.fromJson(data);
       if (res.code == 200) {
         if (success != null) {
@@ -112,8 +113,8 @@ class UserApi {
     }, fail: (message, code) {});
   }
 
-  static void validateProblems(dynamic problems,{Success success}) {
-     _https.post("/api/user/validateProblems", problems,
+  static void validateProblems(dynamic problems,{Success success,String account}) {
+     _https.post("/api/user/validateProblems", {"questions":problems,"account" : account},
         success: (data) {
       var res = NomalResponse.fromJson(data);
       if (res.code == 200) {
@@ -179,5 +180,26 @@ class UserApi {
         if (fail != null) fail(res.message, res.code);
       }
     }, fail: (data, code) {});
+  }
+
+  static void resetPassword(String password, {Success success, Fail fail, String account}) {
+    Map<String,dynamic> map = {
+      'password': password,
+      'account' : account
+    };
+    
+     _https.post("/api/user/resetPassword", map,
+        success: (data) {
+      var res = NomalResponse.fromJson(data);
+      if (res.code == 200) {
+        if (success != null) success(res.message);
+        log(res.message);
+      } else {
+        log(res.message);
+        if (fail != null) fail(res.message, res.code);
+      }
+    }, fail: (data, code) {});
+
+
   }
 }

@@ -71,7 +71,8 @@ class _SecurityCenterState extends State<SecurityCenter> {
       ),
       body: Column(
         children: [
-          Image.asset("assets/images/timg.jpg"),
+        
+          Image.asset("assets/images/shield.jpeg"),
           ProviderWidget<SecurityProblemViewModel>(
             model: SecurityProblemViewModel(),
             onReady: (model) {

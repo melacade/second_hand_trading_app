@@ -1,38 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:second_hand_trading_app/api/user_api.dart';
+import 'package:second_hand_trading_app/base/consts.dart';
 import 'package:second_hand_trading_app/base/provider_wedget.dart';
+import 'package:second_hand_trading_app/common/routes.dart';
+import 'package:second_hand_trading_app/model/security_problems.dart';
 import 'package:second_hand_trading_app/viewmodel/user_view_model.dart';
-
-
-class ResetPassword extends StatefulWidget {
-  ResetPassword({this.args});
-  var args;
+class LostAndFound extends StatefulWidget {
   @override
-  _ResetPasswordState createState() => _ResetPasswordState();
+  _LostAndFoundState createState() => _LostAndFoundState();
 }
 
-class _ResetPasswordState extends State<ResetPassword> {
-  String _password1;
-  String _password2;
-  _onSubmit(){
-    if(_password1 == "" || _password1 == null || _password1.length > 11 || _password1.length < 6 ){
-      _showMessage("The password length needs to be between 6 and 11",false);
+class _LostAndFoundState extends State<LostAndFound> {
+  String _account;
+
+  void _onSubmit(){
+    //_account.length < 5 ||
+    if (_account == null||_account == ''|| _account.length>10|| _account.contains(" ")) {
+      _showMessageDialog('Account length should be between 5 and 10, and does not contain spaces');
       return;
     }
+    UserApi.checkSecurityProblem(account: _account,success: (json) {
+      var problems = SecurityProblems.fromJson(json);
+      Navigator.pop(context);
+      Navigator.pushNamed(context, Routes.resetAccount,arguments: {
+        'action' : Consts.changePassword,
+        'problems' : problems,
+        'account' : _account
+      });
+    },fail: (message,code){
+      if(code == -1){
+        _showMessageDialog('The account '+_account+' does not exist!');
+      }else{
 
-    if(_password1 != _password2){
-      _showMessage("The two passwords are different!",false);
-      return;
-    }
-
-    UserApi.resetPassword(_password1, account: widget.args['account'],success : (data){
-      _showMessage(data, true);
-    },fail:(message,code){
-      _showMessage(message, false);
+      }
     });
   }
-  void _showMessage(String message, bool back) {
+  void _showMessageDialog(String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -44,12 +48,7 @@ class _ResetPasswordState extends State<ResetPassword> {
             new FlatButton(
               child: new Text("ok"),
               onPressed: () {
-                if(back){
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                }else{
-                  Navigator.pop(context);
-                }
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -58,13 +57,12 @@ class _ResetPasswordState extends State<ResetPassword> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Reset Password",
+          "Lost and Found",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -83,46 +81,27 @@ class _ResetPasswordState extends State<ResetPassword> {
               height: .4.hp,
               image: AssetImage("assets/images/shield.jpeg"),
             ),
-            Text("New Password"),
+            Text("Please enther account"),
             Expanded(
               child: TextField(
-                obscureText: true,
+              
                 maxLines: 1,
                 style: TextStyle(fontSize: 50.ssp),
                 decoration: new InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Please input a password',
+                  hintText: 'Please input a account',
                   icon: new Icon(
-                    Icons.lock,
+                    Icons.account_box,
                     color: Colors.grey,
                   ),
                 ),
                 
                 onChanged: (value) {
-                  _password1 = value;
+                  _account = value;
                 },
               ),
             ),
-            Text("Please enter the password again"),
-            Expanded(
-              child: TextField(
-                maxLines: 1,
-                obscureText: true,
-                autofocus: false,
-                style: TextStyle(fontSize: 50.ssp),
-                decoration: new InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Please input a password',
-                  icon: new Icon(
-                    Icons.lock,
-                    color: Colors.grey,
-                  ),
-                ),
-                onChanged: (value) {
-                  _password2 = value;
-                },
-              ),
-            ),
+            
             Row(
               children: [
                 Expanded(
@@ -136,7 +115,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       exist: true,
                       builder: (context, model, child) {
                         return Text(UserViewModel.userBean.data?.id == null
-                            ? "Skip"
+                            ? "Cancle"
                             : "Cancle");
                       },
                     ),
