@@ -15,8 +15,8 @@ class _LostAndFoundState extends State<LostAndFound> {
   String _account;
 
   void _onSubmit(){
-    //_account.length < 5 ||
-    if (_account == null||_account == ''|| _account.length>10|| _account.contains(" ")) {
+
+    if (_account == null|| _account.length < 5 || _account == ''|| _account.length>10|| _account.contains(" ")) {
       _showMessageDialog('Account length should be between 5 and 10, and does not contain spaces');
       return;
     }

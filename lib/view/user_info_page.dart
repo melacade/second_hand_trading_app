@@ -102,7 +102,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
           border: Border(bottom: BorderSide(width: 1, color: Colors.black12))),
       child: TextField(
         decoration: InputDecoration(
-          icon: title == "User nickname" ? Icon(Icons.person) : Icon(Icons.phone),
+          icon:
+              title == "User nickname" ? Icon(Icons.person) : Icon(Icons.phone),
 
           // labelText: title,
           // hintText: "hintText",
@@ -125,10 +126,9 @@ class _UserInfoPageState extends State<UserInfoPage> {
               margin: EdgeInsets.only(top: 19),
               child: Material(
                 shape: CircleBorder(
-                    side: BorderSide(
-                        color: Colors.green,
-                        width: 2,
-                        style: BorderStyle.solid)),
+                  side: BorderSide(
+                      color: Colors.green, width: 2, style: BorderStyle.solid),
+                ),
                 child: IconButton(
                   icon: CircleAvatar(
                     radius: 50,
