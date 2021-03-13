@@ -45,7 +45,7 @@ class UserApi {
     String uploadPath = "/file/upload/img/avatar";
 
     Map<String, dynamic> map = Map();
-    map["file"] = await MultipartFile.fromFile(file.path);
+    map["files"] = await MultipartFile.fromFile(file.path);
 
     ///通过FormData
     FormData formData = FormData.fromMap(map);

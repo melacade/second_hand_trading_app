@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:second_hand_trading_app/view/DetailPage.dart';
+import 'package:second_hand_trading_app/view/add_new_goods.dart';
 import 'package:second_hand_trading_app/view/add_new_security_problem.dart';
 import 'package:second_hand_trading_app/view/add_payment.dart';
 import 'package:second_hand_trading_app/view/login_page.dart';
@@ -12,6 +13,7 @@ import 'package:second_hand_trading_app/view/reset_payment.dart';
 import 'package:second_hand_trading_app/view/reset_security_problems.dart';
 import 'package:second_hand_trading_app/view/search_page.dart';
 import 'package:second_hand_trading_app/view/security_center.dart';
+import 'package:second_hand_trading_app/view/show_images.dart';
 import 'package:second_hand_trading_app/view/splash_page.dart';
 import 'package:second_hand_trading_app/view/user_info_page.dart';
 
@@ -40,6 +42,9 @@ class Routes {
 
   static const String lostAndFound = "/lostAndFound";
 
+  static const String addNewGoods = "/addNewGoods";
+
+  static const String showImages = "/showImages";
   static Route findRoutes(RouteSettings settings) {
     final String name = settings.name;
     return MaterialPageRoute(builder: (_) {
@@ -47,7 +52,7 @@ class Routes {
     });
   }
 
-  static Widget _findPage(String name, Object arguments) {
+  static Widget _findPage(String name, dynamic arguments) {
     Widget page;
     switch (name) {
       case splashPage:
@@ -57,7 +62,9 @@ class Routes {
         page = MainPage();
         break;
       case searchPage:
-        page = SearchPage();
+        page = SearchPage(
+          searchText: arguments,
+        );
         break;
       case loginPage:
         page = LoginPage();
@@ -97,8 +104,17 @@ class Routes {
       case resetPayment:
         page = ResetPayment();
         break;
-        case lostAndFound:
+      case lostAndFound:
         page = LostAndFound();
+        break;
+      case addNewGoods:
+        page = AddNewGoods();
+        break;
+      case showImages:
+        page = ShowImages(
+          arguments['model'],
+          index: arguments['index'],
+        );
         break;
       default:
         page = MainPage();
