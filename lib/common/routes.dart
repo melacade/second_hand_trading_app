@@ -3,6 +3,7 @@ import 'package:second_hand_trading_app/view/DetailPage.dart';
 import 'package:second_hand_trading_app/view/add_new_goods.dart';
 import 'package:second_hand_trading_app/view/add_new_security_problem.dart';
 import 'package:second_hand_trading_app/view/add_payment.dart';
+import 'package:second_hand_trading_app/view/goods_detail_page.dart';
 import 'package:second_hand_trading_app/view/login_page.dart';
 import 'package:second_hand_trading_app/view/lost_and_found.dart';
 import 'package:second_hand_trading_app/view/main_page.dart';
@@ -45,6 +46,8 @@ class Routes {
   static const String addNewGoods = "/addNewGoods";
 
   static const String showImages = "/showImages";
+
+  static const String goodsDetail = "/goodsDetail";
   static Route findRoutes(RouteSettings settings) {
     final String name = settings.name;
     return MaterialPageRoute(builder: (_) {
@@ -114,6 +117,11 @@ class Routes {
         page = ShowImages(
           arguments['model'],
           index: arguments['index'],
+        );
+        break;
+      case goodsDetail:
+        page = GoodsDetailPage(
+          goodsId: arguments,
         );
         break;
       default:

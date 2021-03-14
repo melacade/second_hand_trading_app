@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:second_hand_trading_app/model/goods_detail.dart';
 import 'package:second_hand_trading_app/model/noaml_response.dart';
 import 'package:second_hand_trading_app/model/up_load_model.dart';
 import 'package:second_hand_trading_app/utils/http/http_utils.dart';
@@ -73,5 +74,25 @@ class GoodsApi {
     },fail: (data,code){
 
     });
+  }
+
+  static void getGoodsInfo(goods_id, {Success success,Fail fail}) {
+    _http.post("/api/goods/info", goods_id,success: (data){
+      var goodsDetail = GoodsDetail.fromJson(data);
+      log(goodsDetail.message);
+      if(goodsDetail.code == 200){
+        
+        if(success!=null){
+          success(goodsDetail);
+        }
+      }else{
+        if(fail!=null){
+          fail(goodsDetail.message,goodsDetail.code);
+        }
+      }
+    },fail: (message,code){
+
+    });
+
   }
 }

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:second_hand_trading_app/api/goods_api.dart';
+import 'package:second_hand_trading_app/common/routes.dart';
 import 'package:second_hand_trading_app/view/components/goods_card.dart';
 
 class SearchBody extends StatefulWidget {
@@ -66,7 +67,7 @@ class _SearchBodyState extends State<SearchBody> {
           return Listener(
             onPointerUp: (up) {
               if(!moving){
-                print("onPointerUp${index}");
+                Navigator.pushNamed(this.context, Routes.goodsDetail,arguments: _results[index]["id"]);
               }
               moving = false;
             },
