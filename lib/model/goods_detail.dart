@@ -23,12 +23,14 @@ class GoodsDetail {
 }
 
 class Data {
+  Owner owner;
   List<Images> images;
   GoodsInfo goodsInfo;
 
-  Data({this.images, this.goodsInfo});
+  Data({this.owner, this.images, this.goodsInfo});
 
   Data.fromJson(Map<String, dynamic> json) {
+    owner = json['owner'] != null ? new Owner.fromJson(json['owner']) : null;
     if (json['images'] != null) {
       images = new List<Images>();
       json['images'].forEach((v) {
@@ -42,12 +44,47 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.owner != null) {
+      data['owner'] = this.owner.toJson();
+    }
     if (this.images != null) {
       data['images'] = this.images.map((v) => v.toJson()).toList();
     }
     if (this.goodsInfo != null) {
       data['goodsInfo'] = this.goodsInfo.toJson();
     }
+    return data;
+  }
+}
+
+class Owner {
+  String id;
+  String phone;
+  String avator;
+  int authTime;
+  String name;
+  Null token;
+
+  Owner(
+      {this.id, this.phone, this.avator, this.authTime, this.name, this.token});
+
+  Owner.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    phone = json['phone'];
+    avator = json['avator'];
+    authTime = json['authTime'];
+    name = json['name'];
+    token = json['token'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['phone'] = this.phone;
+    data['avator'] = this.avator;
+    data['authTime'] = this.authTime;
+    data['name'] = this.name;
+    data['token'] = this.token;
     return data;
   }
 }

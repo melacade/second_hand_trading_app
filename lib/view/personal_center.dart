@@ -87,6 +87,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
     }
     switch (title) {
             case "Receiving address management":
+              Navigator.pushNamed(context, Routes.addressList);
               break;
             case "Account and security":
               Navigator.pushNamed(context, Routes.securityCenter);

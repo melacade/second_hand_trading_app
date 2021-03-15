@@ -78,6 +78,7 @@ class GoodsApi {
 
   static void getGoodsInfo(goods_id, {Success success,Fail fail}) {
     _http.post("/api/goods/info", goods_id,success: (data){
+      log(data.toString());
       var goodsDetail = GoodsDetail.fromJson(data);
       log(goodsDetail.message);
       if(goodsDetail.code == 200){
@@ -94,5 +95,21 @@ class GoodsApi {
 
     });
 
+  }
+
+  static void getGoodsByPage(int currPage, int i, {Success success, Fail fail}) {
+    _http.get("/api/goods/getGoodsByPage/${currPage}/${i}",null,success: (json) {
+      var res = NomalResponse.fromJson(json);
+      log(res.message);
+      if(res.code == 200){
+        if(success !=null){
+          success(res.data);
+        }
+      }else{
+        if(fail!=null){
+          fail(res.message,res.code);
+        }
+      }
+    },);
   }
 }

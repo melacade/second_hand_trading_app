@@ -42,7 +42,13 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                 children: <Widget>[
                   Row(
                     children: [
-                      Text("count"),
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          "Count   ",
+                          style: TextStyle(fontSize: 50.ssp),
+                        ),
+                      ),
                       TextButton(
                         child:
                             Text("+1", style: TextStyle(color: Colors.black)),
@@ -61,6 +67,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                       Expanded(
                         child: TextField(
                           controller: TextEditingController(text: "${_count}"),
+                          textAlign: TextAlign.center,
                           onChanged: (value) {
                             _count = int.parse(value);
                             if (_count <= 0) {
@@ -92,18 +99,47 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                       ),
                     ],
                   ),
-                  ListTile(
-                    title: Text('Log out', textAlign: TextAlign.center),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
+                  Divider(
+                    color: Colors.grey,
                   ),
-                  ListTile(
-                    title: Text('Cancel', textAlign: TextAlign.center),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
+                  Row(
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            "收货地址:",
+                            style: TextStyle(fontSize: 50.ssp),
+                          )),
+                      Expanded(
+                          child: Text(
+                        "四川省 成都市 成华区...",
+                        style: TextStyle(fontSize: 50.ssp),
+                      )),
+                      TextButton(onPressed: null, child: Text("更改地址")),
+                    ],
                   ),
+                  Row(children: [
+                    Expanded(
+                      flex: 5,
+                      child: Text(
+                        "Total Price: ",
+                        style: TextStyle(fontSize: 50.ssp),
+                      ),
+                    ),
+                    Expanded(
+                        child: Text(
+                      "￥ ${goodsData.data.goodsInfo.price * _count}",
+                      style: TextStyle(fontSize: 50.ssp,color: Colors.red),
+                    )),
+                  ]),
+                  Expanded(
+                      child: TextButton(
+                    onPressed: null,
+                    child: Text(
+                      "Submit",
+                      style: TextStyle(fontSize: 50.ssp),
+                    ),
+                  ))
                 ],
               ),
             );
@@ -156,11 +192,38 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
           Divider(
             color: Colors.grey,
           ),
+          Container(
+            color: Colors.grey,
+            child: Row(
+              children: [
+                Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+                Text(
+                  "Owner: ",
+                  style: TextStyle(fontSize: 50.ssp),
+                ),
+                CircleAvatar(
+                  backgroundImage: goodsData == null
+                      ? AssetImage("assets/images/default.jpg")
+                      : NetworkImage(
+                          Http.baseUri + goodsData.data.owner.avator),
+                ),
+                Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                Text(
+                  goodsData == null ? "Loading" : goodsData.data.owner.name,
+                  style: TextStyle(fontSize: 50.ssp),
+                )
+              ],
+            ),
+          ),
+          Divider(
+            color: Colors.grey,
+          ),
           Padding(padding: EdgeInsets.all(10)),
           Row(
             children: [
               Padding(padding: EdgeInsets.all(5)),
               Expanded(
+                flex: 3,
                 child: Text(
                   goodsData == null ? "Loading" : goodsData.data.goodsInfo.name,
                   style: TextStyle(fontSize: 50.ssp),
@@ -171,7 +234,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                   goodsData == null
                       ? "Loading"
                       : "￥ ${goodsData.data.goodsInfo.price}",
-                  style: TextStyle(fontSize: 50.ssp),
+                  style: TextStyle(fontSize: 50.ssp, color: Colors.red),
                 ),
               )
             ],
@@ -182,11 +245,20 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
           Row(
             children: [
               Padding(padding: EdgeInsets.all(5)),
-              Text(
-                goodsData == null
-                    ? "Loading"
-                    : "New Percentage: ${goodsData.data.goodsInfo.newPercentage} %",
-                style: TextStyle(fontSize: 50.ssp),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  goodsData == null ? "Loading" : "New Percentage: ",
+                  style: TextStyle(fontSize: 50.ssp),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  goodsData == null
+                      ? "Loading"
+                      : "${goodsData.data.goodsInfo.newPercentage} %",
+                  style: TextStyle(fontSize: 50.ssp),
+                ),
               ),
             ],
           ),

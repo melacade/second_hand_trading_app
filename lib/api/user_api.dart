@@ -202,4 +202,26 @@ class UserApi {
 
 
   }
+
+  static void getAddressList({Success success}) {
+    _https.get("/api/user/getAddress", null, success: (data){
+      var res = NomalResponse.fromJson(data);
+      if(res.code == 200){
+        if(success != null){
+          success(res.data);
+        }
+      }
+    });
+  }
+
+  static void addAddress(Map addr, { Success success}) {
+    _https.post("/api/user/addUserAddress", addr, success : (data){
+      var res = NomalResponse.fromJson(data);
+      if(res.code == 200){
+        if(success != null){
+          success(res.data);
+        }
+      }
+    });
+  }
 }
