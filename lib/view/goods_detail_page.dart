@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:second_hand_trading_app/api/goods_api.dart';
+import 'package:second_hand_trading_app/common/routes.dart';
 import 'package:second_hand_trading_app/model/goods_detail.dart';
 import 'package:second_hand_trading_app/utils/http/http_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +21,29 @@ class GoodsDetailPage extends StatefulWidget {
 class _GoodsDetailPageState extends State<GoodsDetailPage> {
   GoodsDetail goodsData;
   var _count;
+
+  void _showMessageDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text('Tips'),
+          content: new Text(message),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("ok"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -29,6 +53,22 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
       _count = 1;
       setState(() {});
     }, fail: (message, code) {});
+  }
+
+  void _onSubmit() {
+    log("submit");
+    Map data = {
+      "goodsId": goodsData.data.goodsInfo.id,
+      "price": _count * goodsData.data.goodsInfo.price,
+      "address": 4,
+      "count": _count
+    };
+    GoodsApi.createOrder(data, success: (json) {
+      String orderId = json;
+      log("orderId : ${orderId}");
+      Navigator.pop(context);
+      Navigator.pushNamed(context, Routes.orderDetail, arguments: orderId);
+    });
   }
 
   Future _openModalBottomSheet() async {
@@ -129,12 +169,16 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                     Expanded(
                         child: Text(
                       "￥ ${goodsData.data.goodsInfo.price * _count}",
-                      style: TextStyle(fontSize: 50.ssp,color: Colors.red),
+                      style: TextStyle(fontSize: 50.ssp, color: Colors.red),
                     )),
                   ]),
                   Expanded(
                       child: TextButton(
-                    onPressed: null,
+                    onPressed: _count == 0
+                        ? null
+                        : () {
+                            _onSubmit();
+                          },
                     child: Text(
                       "Submit",
                       style: TextStyle(fontSize: 50.ssp),
@@ -202,7 +246,8 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                   style: TextStyle(fontSize: 50.ssp),
                 ),
                 CircleAvatar(
-                  backgroundImage: goodsData == null
+                  backgroundImage: goodsData == null ||
+                          goodsData.data.owner.avator == 'default'
                       ? AssetImage("assets/images/default.jpg")
                       : NetworkImage(
                           Http.baseUri + goodsData.data.owner.avator),

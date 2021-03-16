@@ -57,52 +57,67 @@ class _GoodsListState extends State<GoodsList> {
 
   @override
   Widget build(BuildContext context) {
-    return init
-        ? Row(
-            children: [
-              Expanded(
-                child: TextButton(
-                  child: Text("Refresh"),
-                  onPressed: () {
-                    GoodsApi.getGoodsByPage(_currPage, 10, success: (data) {
-                      _results.clear();
-                      _results.addAll(data);
-                      init = false;
-                      setState(() {});
-                    }, fail: (message, code) {});
-                  },
-                ),
+    return RefreshIndicator(
+        displacement: 40, //指示器显示时距顶部位置
+        color: Colors.red, //指示器颜色，默认ThemeData.accentColor
+        backgroundColor: Colors.white, //指示器背景颜色，默认ThemeData.canvasColor
+        notificationPredicate:
+            defaultScrollNotificationPredicate, //是否应处理滚动通知的检查（是否通知下拉刷新动作）
+        child: init
+            ? Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      child: Text("Refresh"),
+                      onPressed: () {
+                        GoodsApi.getGoodsByPage(_currPage, 10, success: (data) {
+                          _results.clear();
+                          _results.addAll(data);
+                          init = false;
+                          setState(() {});
+                        }, fail: (message, code) {});
+                      },
+                    ),
+                  ),
+                ],
+              )
+            : StaggeredGridView.countBuilder(
+                controller: _controller,
+                padding: EdgeInsets.all(10),
+                crossAxisCount: 4,
+                itemCount: _results.length,
+                physics: AlwaysScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return Listener(
+                    onPointerUp: (up) {
+                      if (!moving) {
+                        Navigator.pushNamed(this.context, Routes.goodsDetail,
+                            arguments: _results[index]["id"]);
+                      }
+                      moving = false;
+                    },
+                    onPointerMove: (move) {
+                      moving = true;
+                    },
+                    child: GoodsCard(
+                        _results[index]['name'], _results[index]['price'],
+                        img: _results[index]['defaultImage'],
+                        count: _results[index]['count']),
+                  );
+                },
+                staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
+                mainAxisSpacing: 10.0,
+                crossAxisSpacing: 10.0,
               ),
-            ],
-          )
-        : Container(
-            child: StaggeredGridView.countBuilder(
-              controller: _controller,
-              padding: EdgeInsets.all(10),
-              crossAxisCount: 4,
-              itemCount: _results.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Listener(
-                  onPointerUp: (up) {
-                    if (!moving) {
-                      Navigator.pushNamed(this.context, Routes.goodsDetail,
-                          arguments: _results[index]["id"]);
-                    }
-                    moving = false;
-                  },
-                  onPointerMove: (move) {
-                    moving = true;
-                  },
-                  child: GoodsCard(
-                      _results[index]['name'], _results[index]['price'],
-                      img: _results[index]['defaultImage'],
-                      count: _results[index]['count']),
-                );
-              },
-              staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
-              mainAxisSpacing: 10.0,
-              crossAxisSpacing: 10.0,
-            ),
-          );
+        onRefresh: () async {
+          log("refe");
+          GoodsApi.getGoodsByPage(_currPage, 10, success: (data) {
+            _results.clear();
+            _currPage = 1;
+            _results.addAll(data);
+            init = false;
+            setState(() {});
+          }, fail: (message, code) {});
+        });
   }
 }

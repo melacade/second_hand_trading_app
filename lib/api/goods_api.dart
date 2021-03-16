@@ -112,4 +112,41 @@ class GoodsApi {
       }
     },);
   }
+
+  static void getOrderInfo(orderId, {Success success}) {
+    _http.get("/api/goods/orderInfo/${orderId}", null, success: (json){
+        var res = NomalResponse.fromJson(json);
+        if(res.code == 200){
+          if(success != null){
+            success(res.data);
+          }
+        } 
+    });
+  }
+
+  static void createOrder(Map data, {Success success}) {
+    _http.post("/api/goods/createOrder", data,success: (data){
+      var res = NomalResponse.fromJson(data);
+      if(res.code== 200){
+        if(success!=null){
+          success(res.data);
+        }
+      }
+    });
+  }
+
+  static void payOrder(orderId, {Success success, Fail fail}) {
+    _http.post("/api/goods/payOrder", orderId, success: (data){
+      var res = NomalResponse.fromJson(data);
+      if(res.code == 200){
+        if(success !=null){
+          success(res.message);
+        }
+      }else{
+        if(fail !=null){
+          fail(res.message,res.code);
+        }
+      }
+    });
+  }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class AddressCard extends StatefulWidget {
-  AddressCard(this.country, this.provence, this.city, this.detail);
+  AddressCard(this.country, this.provence, this.city, this.detail, {this.select = false});
+  bool select;
   String country;
   String provence;
   String city;
@@ -93,7 +95,14 @@ class _AddressCardState extends State<AddressCard> {
         child: Row(
           children: [
             Expanded(
+              flex: 4,
               child: Text("国家 省份 详细............."),
+            ),
+            Expanded(
+              child: TextButton(
+                onPressed: widget.select ? (){} : null,
+                child: Text("Select"),
+              ),
             ),
             Expanded(
               child: TextButton(

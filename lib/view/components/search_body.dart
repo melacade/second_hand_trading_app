@@ -54,11 +54,16 @@ class _SearchBodyState extends State<SearchBody> {
       }
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return RefreshIndicator(
+      color: Colors.red, //指示器颜色，默认ThemeData.accentColor
+      backgroundColor: Colors.white, //指示器背景颜色，默认ThemeData.canvasColor
+      notificationPredicate:
+          defaultScrollNotificationPredicate, //是否应处理滚动通知的检查（是否通知下拉刷新动作）
       child: StaggeredGridView.countBuilder(
+        physics: AlwaysScrollableScrollPhysics(),
         controller: _controller,
         padding: EdgeInsets.all(10),
         crossAxisCount: 4,
@@ -66,12 +71,13 @@ class _SearchBodyState extends State<SearchBody> {
         itemBuilder: (BuildContext context, int index) {
           return Listener(
             onPointerUp: (up) {
-              if(!moving){
-                Navigator.pushNamed(this.context, Routes.goodsDetail,arguments: _results[index]["id"]);
+              if (!moving) {
+                Navigator.pushNamed(this.context, Routes.goodsDetail,
+                    arguments: _results[index]["id"]);
               }
               moving = false;
             },
-            onPointerMove: (move){
+            onPointerMove: (move) {
               moving = true;
             },
             child: GoodsCard(_results[index]['name'], _results[index]['price'],
@@ -83,6 +89,14 @@ class _SearchBodyState extends State<SearchBody> {
         mainAxisSpacing: 10.0,
         crossAxisSpacing: 10.0,
       ),
+      onRefresh: () async {
+        GoodsApi.search(widget.search, success: (data) {
+          _currPage = 1;
+          _results.clear();
+          _results.addAll(data);
+          setState(() {});
+        }, fail: (message, code) {});
+      },
     );
   }
 }
