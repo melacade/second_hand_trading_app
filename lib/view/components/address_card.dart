@@ -1,25 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:second_hand_trading_app/api/user_api.dart';
+import 'package:second_hand_trading_app/viewmodel/default_address.dart';
 
 class AddressCard extends StatefulWidget {
-  AddressCard(this.country, this.provence, this.city, this.detail, {this.select = false});
+  AddressCard(this.country, this.province, this.city, this.detail,
+      {this.id, this.select = false, this.isDefault = false, this.model});
+  bool isDefault;
+  int id;
   bool select;
   String country;
-  String provence;
+  String province;
   String city;
   String detail;
+  DefaultAddress model;
   @override
   _AddressCardState createState() => _AddressCardState();
 }
 
 class _AddressCardState extends State<AddressCard> {
+  String _country;
+  String _province;
+  String _city;
+  String _detail;
+
+  void _setDefault() {
+    Map data = {
+      'id': widget.id,
+      'country': widget.country,
+      'province': widget.province,
+      'city': widget.city,
+      'detail': widget.detail,
+      'isDefault': true,
+    };
+    UserApi.updateAddress(data, success: (data) {
+      widget.isDefault = true;
+      if(widget.model!=null)
+      widget.model.defaultChanged();
+      setState(() {});
+    });
+  }
+
+  void _onSubmit() {
+    Map data = {
+      'id': widget.id,
+      'country': _country,
+      'province': _province,
+      'city': _city,
+      'detail': _detail,
+      'isDefault': widget.isDefault,
+    };
+    UserApi.updateAddress(data, success: (data) {
+      widget.country = _country;
+      widget.province = _province;
+      widget.city = _city;
+      widget.detail = _detail;
+      setState(() {});
+    });
+  }
+
   Future _openModalBottomSheet() async {
     await showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (context, state) {
             return Container(
-              height: 200.0,
               child: Column(
                 children: <Widget>[
                   Row(
@@ -29,7 +74,11 @@ class _AddressCardState extends State<AddressCard> {
                       ),
                       Expanded(
                         child: TextField(
-                          controller: TextEditingController(),
+                          controller:
+                              TextEditingController(text: widget.country),
+                          onChanged: (value) {
+                            _country = value;
+                          },
                         ),
                       ),
                     ],
@@ -37,11 +86,15 @@ class _AddressCardState extends State<AddressCard> {
                   Row(
                     children: [
                       Expanded(
-                        child: Text("Provence: "),
+                        child: Text("Province: "),
                       ),
                       Expanded(
                         child: TextField(
-                          controller: TextEditingController(),
+                          controller:
+                              TextEditingController(text: widget.province),
+                          onChanged: (value) {
+                            _province = value;
+                          },
                         ),
                       ),
                     ],
@@ -53,7 +106,10 @@ class _AddressCardState extends State<AddressCard> {
                       ),
                       Expanded(
                         child: TextField(
-                          controller: TextEditingController(),
+                          controller: TextEditingController(text: widget.city),
+                          onChanged: (value) {
+                            _city = value;
+                          },
                         ),
                       ),
                     ],
@@ -65,15 +121,23 @@ class _AddressCardState extends State<AddressCard> {
                       ),
                       Expanded(
                         child: TextField(
-                          controller: TextEditingController(),
+                          controller:
+                              TextEditingController(text: widget.detail),
+                          onChanged: (value) {
+                            _detail = value;
+                          },
                         ),
                       ),
                     ],
                   ),
                   Expanded(
-                      child: TextButton(
-                    child: Text("Submit"),
-                  ))
+                    child: TextButton(
+                      child: Text("Submit"),
+                      onPressed: () {
+                        _onSubmit();
+                      },
+                    ),
+                  ),
                 ],
               ),
             );
@@ -84,35 +148,53 @@ class _AddressCardState extends State<AddressCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.blueAccent,
+      color: Colors.grey[300],
       //z轴的高度，设置card的阴影
       elevation: 20.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Container(
-        height: .2.hp,
+        height: .15.hp,
         child: Row(
           children: [
             Expanded(
-              flex: 4,
-              child: Text("国家 省份 详细............."),
-            ),
+                flex: 4,
+                child: Text(
+                  "${widget.country} ${widget.province} ${widget.city}...",
+                )),
             Expanded(
               child: TextButton(
-                onPressed: widget.select ? (){} : null,
+                onPressed: widget.select
+                    ? () {
+                        Navigator.pop(context, {
+                          'id': widget.id,
+                          'country': widget.country,
+                          'province': widget.province,
+                          'city': widget.city,
+                          'detail': widget.detail,
+                          'isDefault': widget.isDefault,
+                        });
+                      }
+                    : null,
                 child: Text("Select"),
               ),
             ),
             Expanded(
               child: TextButton(
-                onPressed: null,
+                onPressed: !widget.isDefault
+                    ? () {
+                        _setDefault();
+                      }
+                    : null,
                 child: Text("Default"),
               ),
             ),
             Expanded(
               child: TextButton(
-                onPressed: null,
+                onPressed: () {
+                  _openModalBottomSheet();
+                },
                 child: Text("Edit"),
               ),
             ),

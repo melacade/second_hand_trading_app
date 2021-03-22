@@ -9,6 +9,7 @@ import 'package:second_hand_trading_app/view/login_page.dart';
 import 'package:second_hand_trading_app/view/lost_and_found.dart';
 import 'package:second_hand_trading_app/view/main_page.dart';
 import 'package:second_hand_trading_app/view/order_detail.dart';
+import 'package:second_hand_trading_app/view/order_list.dart';
 import 'package:second_hand_trading_app/view/register_page.dart';
 import 'package:second_hand_trading_app/view/reset_account.dart';
 import 'package:second_hand_trading_app/view/reset_password.dart';
@@ -54,6 +55,9 @@ class Routes {
   static const String addressList = "/addressList";
 
   static const String orderDetail = "/orderDetail";
+
+  static const String orderList = "/orderList";
+
   static Route findRoutes(RouteSettings settings) {
     final String name = settings.name;
     return MaterialPageRoute(builder: (_) {
@@ -131,10 +135,13 @@ class Routes {
         );
         break;
       case addressList:
-        page = AddressList();
+        page = AddressList( select :arguments);
         break;
       case orderDetail:
         page = OrderDetail(arguments);
+        break;
+        case orderList:
+        page = OrderList(status: arguments);
         break;
       default:
         page = MainPage();

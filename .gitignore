@@ -43,3 +43,10 @@ app.*.map.json
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 /.gradle/
+.vscode/launch.json
+.vscode/tasks.json
+android/.project
+android/app/.classpath
+android/settings_aar.gradle
+ios/Runner/Info.plist
+*.json

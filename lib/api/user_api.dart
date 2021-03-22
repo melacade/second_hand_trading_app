@@ -58,9 +58,16 @@ class UserApi {
     return Future.value();
   }
 
-  static Future<void> addNewSecurityProblem(String problem1, String problem2,
-      String problem3, String answer1, String answer2, String answer3,
-      String password, {Success success, Fail fail}) async {
+  static Future<void> addNewSecurityProblem(
+      String problem1,
+      String problem2,
+      String problem3,
+      String answer1,
+      String answer2,
+      String answer3,
+      String password,
+      {Success success,
+      Fail fail}) async {
     List<Map<String, dynamic>> list = List();
     list.add({"question": problem1, "answer": answer1});
     list.add({
@@ -68,9 +75,8 @@ class UserApi {
       "answer": answer2,
     });
     list.add({"question": problem3, "answer": answer3});
-    Map<String, dynamic> map = {'questions' : list, "password" : password};
-    await _https.post("/api/user/createSecurityQuestion", map,
-        success: (data) {
+    Map<String, dynamic> map = {'questions': list, "password": password};
+    await _https.post("/api/user/createSecurityQuestion", map, success: (data) {
       var res = NomalResponse.fromJson(data);
       if (res.code == 200) {
         if (success != null) success(res.message);
@@ -83,25 +89,26 @@ class UserApi {
     return Future.value();
   }
 
-  static void checkSecurityProblem({Success success, Fail fail, String account}) async {
-
-    await _https.get("/api/user/checkSecuriy", {'account' : account}, success: (data) {
+  static void checkSecurityProblem(
+      {Success success, Fail fail, String account}) async {
+    await _https.get("/api/user/checkSecuriy", {'account': account},
+        success: (data) {
       var res = NomalResponse.fromJson(data);
       if (res.code == 200) {
         if (success != null) {
           success(data);
         }
         log("检查到有密保问题");
-      }else{
-        if(fail != null){
-          fail(res.message,res.code);
+      } else {
+        if (fail != null) {
+          fail(res.message, res.code);
         }
         log("检查到没有密保问题");
       }
     }, fail: (message, code) {});
   }
 
-  static void checkPaymentPDW({Success success}) async{
+  static void checkPaymentPDW({Success success}) async {
     await _https.get("/api/user/checkPaymentSecurity", null, success: (data) {
       var res = NomalResponse.fromJson(data);
       if (res.code == 200) {
@@ -113,18 +120,21 @@ class UserApi {
     }, fail: (message, code) {});
   }
 
-  static void validateProblems(dynamic problems,{Success success,String account}) {
-     _https.post("/api/user/validateProblems", {"questions":problems,"account" : account},
-        success: (data) {
+  static void validateProblems(dynamic problems,
+      {Success success, String account}) {
+    _https.post("/api/user/validateProblems",
+        {"questions": problems, "account": account}, success: (data) {
       var res = NomalResponse.fromJson(data);
       if (res.code == 200) {
         if (success != null) success(res.data);
         log(res.message);
-      } 
+      }
     }, fail: (data, code) {});
   }
 
-  static void resetSecurityProblem(String problem1, String problem2, String problem3, String answer1, String answer2, String answer3, {Success success, Fail fail}) {
+  static void resetSecurityProblem(String problem1, String problem2,
+      String problem3, String answer1, String answer2, String answer3,
+      {Success success, Fail fail}) {
     List<Map<String, dynamic>> list = List();
     list.add({"question": problem1, "answer": answer1});
     list.add({
@@ -132,8 +142,7 @@ class UserApi {
       "answer": answer2,
     });
     list.add({"question": problem3, "answer": answer3});
-    _https.post("/api/user/resetSecurityProblems", list,
-        success: (data) {
+    _https.post("/api/user/resetSecurityProblems", list, success: (data) {
       var res = NomalResponse.fromJson(data);
       if (res.code == 200) {
         if (success != null) success(res.message);
@@ -145,13 +154,10 @@ class UserApi {
     }, fail: (data, code) {});
   }
 
-  static void addPayment(String password, String payment, {Success success, Fail fail}) {
-    Map<String,dynamic> map = {
-      "password" : password,
-      "payment" : payment
-    };
-    _https.post("/api/user/addPayment", map,
-        success: (data) {
+  static void addPayment(String password, String payment,
+      {Success success, Fail fail}) {
+    Map<String, dynamic> map = {"password": password, "payment": payment};
+    _https.post("/api/user/addPayment", map, success: (data) {
       var res = NomalResponse.fromJson(data);
       if (res.code == 200) {
         if (success != null) success(res.message);
@@ -163,14 +169,14 @@ class UserApi {
     }, fail: (data, code) {});
   }
 
-  static void resetPayment(String password,String oldPayment, String payment, {Success success, Fail fail}) {
-    Map<String,dynamic> map = {
-      "password" : password,
-      "oldPayment" : oldPayment,
-      "payment" : payment
+  static void resetPayment(String password, String oldPayment, String payment,
+      {Success success, Fail fail}) {
+    Map<String, dynamic> map = {
+      "password": password,
+      "oldPayment": oldPayment,
+      "payment": payment
     };
-    _https.post("/api/user/resetPayment", map,
-        success: (data) {
+    _https.post("/api/user/resetPayment", map, success: (data) {
       var res = NomalResponse.fromJson(data);
       if (res.code == 200) {
         if (success != null) success(res.message);
@@ -182,14 +188,11 @@ class UserApi {
     }, fail: (data, code) {});
   }
 
-  static void resetPassword(String password, {Success success, Fail fail, String account}) {
-    Map<String,dynamic> map = {
-      'password': password,
-      'account' : account
-    };
-    
-     _https.post("/api/user/resetPassword", map,
-        success: (data) {
+  static void resetPassword(String password,
+      {Success success, Fail fail, String account}) {
+    Map<String, dynamic> map = {'password': password, 'account': account};
+
+    _https.post("/api/user/resetPassword", map, success: (data) {
       var res = NomalResponse.fromJson(data);
       if (res.code == 200) {
         if (success != null) success(res.message);
@@ -199,26 +202,47 @@ class UserApi {
         if (fail != null) fail(res.message, res.code);
       }
     }, fail: (data, code) {});
-
-
   }
 
   static void getAddressList({Success success}) {
-    _https.get("/api/user/getAddress", null, success: (data){
+    _https.get("/api/user/getAddress", null, success: (data) {
       var res = NomalResponse.fromJson(data);
-      if(res.code == 200){
-        if(success != null){
+      if (res.code == 200) {
+        if (success != null) {
           success(res.data);
         }
       }
     });
   }
 
-  static void addAddress(Map addr, { Success success}) {
-    _https.post("/api/user/addUserAddress", addr, success : (data){
+  static void addAddress(Map addr, {Success success}) {
+    _https.post("/api/user/addUserAddress", addr, success: (data) {
       var res = NomalResponse.fromJson(data);
+      if (res.code == 200) {
+        if (success != null) {
+          success(res.data);
+        }
+      }
+    });
+  }
+
+  static void updateAddress(Map data, {Success success}) {
+    _https.post("/api/user/updateAddress", data, success: (data) {
+      var res = NomalResponse.fromJson(data);
+      if (res.code == 200) {
+        if (success != null) {
+          success(res.message);
+        }
+      }
+    });
+  }
+
+  static void getDefaultAddress({Success success}) {
+    _https.get("/api/user/getDefaultAddress", null, success: (data) {
+      var res = NomalResponse.fromJson(data);
+      log(res.message);
       if(res.code == 200){
-        if(success != null){
+        if(success!=null){
           success(res.data);
         }
       }

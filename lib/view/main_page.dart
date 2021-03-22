@@ -4,6 +4,7 @@ import 'package:second_hand_trading_app/view/ListPage.dart';
 import 'package:second_hand_trading_app/view/add_new_security_problem.dart';
 import 'package:second_hand_trading_app/view/components/goods_list.dart';
 import 'package:second_hand_trading_app/view/index.dart';
+import 'package:second_hand_trading_app/view/my_saling_goods.dart';
 import 'package:second_hand_trading_app/view/personal_center.dart';
 import 'package:second_hand_trading_app/view/register_page.dart';
 import 'package:second_hand_trading_app/viewmodel/user_view_model.dart';
@@ -32,7 +33,7 @@ class _MainPageState extends State<MainPage> {
         children: <Widget>[
           Index(),
           ListPage(2),
-          ListPage(3),
+          MySalingGoods(),
           PersonalCenter(),
         ],
       ),

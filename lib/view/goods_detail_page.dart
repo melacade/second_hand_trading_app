@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:second_hand_trading_app/api/goods_api.dart';
+import 'package:second_hand_trading_app/api/user_api.dart';
 import 'package:second_hand_trading_app/common/routes.dart';
 import 'package:second_hand_trading_app/model/goods_detail.dart';
 import 'package:second_hand_trading_app/utils/http/http_utils.dart';
@@ -21,7 +22,7 @@ class GoodsDetailPage extends StatefulWidget {
 class _GoodsDetailPageState extends State<GoodsDetailPage> {
   GoodsDetail goodsData;
   var _count;
-
+  var _address;
   void _showMessageDialog(String message) {
     showDialog(
       context: context,
@@ -53,6 +54,9 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
       _count = 1;
       setState(() {});
     }, fail: (message, code) {});
+    UserApi.getDefaultAddress(success:(data){
+      _address = data;
+    });
   }
 
   void _onSubmit() {
@@ -152,10 +156,19 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                           )),
                       Expanded(
                           child: Text(
-                        "四川省 成都市 成华区...",
+                        _address == null ? "" : "${_address['country']} ${_address['province']} ${_address['city']}...",
                         style: TextStyle(fontSize: 50.ssp),
                       )),
-                      TextButton(onPressed: null, child: Text("更改地址")),
+                      TextButton(
+                          onPressed: () async {
+                            var data = await Navigator.pushNamed(
+                                context, Routes.addressList,arguments: true);
+                            if (data != null) {
+                              _address = data;
+                              state(() {});
+                            }
+                          },
+                          child: Text("Change")),
                     ],
                   ),
                   Row(children: [
@@ -174,7 +187,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                   ]),
                   Expanded(
                       child: TextButton(
-                    onPressed: _count == 0
+                    onPressed: _count == 0 || goodsData?.data?.goodsInfo?.count == 0 
                         ? null
                         : () {
                             _onSubmit();

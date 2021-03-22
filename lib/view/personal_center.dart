@@ -49,7 +49,8 @@ class _PersonalCenterState extends State<PersonalCenter> {
             child: Column(
               children: <Widget>[
                 ListTile(
-                  title: Text('Modify personal data', textAlign: TextAlign.center),
+                  title:
+                      Text('Modify personal data', textAlign: TextAlign.center),
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.pushNamed(context, Routes.userInofPage);
@@ -80,27 +81,27 @@ class _PersonalCenterState extends State<PersonalCenter> {
         });
   }
 
-  void navTo(String title){
-    if(UserViewModel.userBean.data.id == null){
-       Navigator.pushNamed(context, Routes.loginPage);
-       return;
+  void navTo(String title) {
+    if (UserViewModel.userBean.data.id == null) {
+      Navigator.pushNamed(context, Routes.loginPage);
+      return;
     }
     switch (title) {
-            case "Receiving address management":
-              Navigator.pushNamed(context, Routes.addressList);
-              break;
-            case "Account and security":
-              Navigator.pushNamed(context, Routes.securityCenter);
-              break;
-            case "Coupon":
-              break;
-            case "Contact customer service":
-              break;
-            case "About us":
-              break;
-            default:
-              break;
-      }
+      case "Receiving address management":
+        Navigator.pushNamed(context, Routes.addressList, arguments: false);
+        break;
+      case "Account and security":
+        Navigator.pushNamed(context, Routes.securityCenter);
+        break;
+      case "Coupon":
+        break;
+      case "Contact customer service":
+        break;
+      case "About us":
+        break;
+      default:
+        break;
+    }
   }
 
   Widget _topHeader(UserBean user) {
@@ -157,10 +158,14 @@ class _PersonalCenterState extends State<PersonalCenter> {
             width: 0.2.wp,
             child: Column(
               children: <Widget>[
-                Icon(
-                  Icons.library_books,
-                  size: 0.05.hp,
-                ),
+                IconButton(
+                    icon: Icon(
+                      Icons.library_books,
+                      size: 0.05.hp,
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.orderList,arguments: 0);
+                    }),
                 Text("My order")
               ],
             ),
@@ -169,10 +174,14 @@ class _PersonalCenterState extends State<PersonalCenter> {
             width: 0.2.wp,
             child: Column(
               children: <Widget>[
-                Icon(
-                  Icons.payment,
-                  size: 0.05.hp,
-                ),
+                IconButton(
+                    icon: Icon(
+                      Icons.payment,
+                      size: 0.05.hp,
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.orderList,arguments: 1);
+                    }),
                 Text("To be paid")
               ],
             ),
@@ -181,10 +190,14 @@ class _PersonalCenterState extends State<PersonalCenter> {
             width: 0.2.wp,
             child: Column(
               children: <Widget>[
-                Icon(
-                  Icons.card_travel,
-                  size: 0.05.hp,
-                ),
+                IconButton(
+                    icon: Icon(
+                      Icons.card_travel,
+                      size: 0.05.hp,
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.orderList,arguments: 2);
+                    }),
                 Text("To be received")
               ],
             ),
@@ -193,9 +206,14 @@ class _PersonalCenterState extends State<PersonalCenter> {
             width: 0.2.wp,
             child: Column(
               children: <Widget>[
-                Icon(
-                  Icons.strikethrough_s,
-                  size: 0.05.hp,
+                IconButton(
+                  icon: Icon(
+                    Icons.strikethrough_s,
+                    size: 0.05.hp,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, Routes.orderList,arguments: -1);
+                  },
                 ),
                 Text("Return")
               ],

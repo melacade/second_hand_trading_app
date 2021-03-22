@@ -57,20 +57,24 @@ class _GoodsCardState extends State<GoodsCard> {
           Container(
               child: Row(
             children: [
-              Text(
-                "￥${price}",
-                style: TextStyle(fontSize: 55.ssp, color: Colors.red),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  "￥${price}",
+                  style: TextStyle(fontSize: 55.ssp, color: Colors.red),
+                ),
               ),
-                Padding(padding: EdgeInsets.only(left: 120)),
-              (count == null || count == 0)
-                  ? Text(
-                      "${count} left",
-                      style: TextStyle(color: Colors.red),
-                    )
-                  : Text(
-                      "${count} left",
-                      style: TextStyle(color: Colors.green),
-                    ),
+              Expanded(
+                child: (count == null || count == 0)
+                    ? Text(
+                        "${count} left",
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : Text(
+                        "${count} left",
+                        style: TextStyle(color: Colors.green),
+                      ),
+              ),
             ],
           ))
         ],

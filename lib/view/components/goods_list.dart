@@ -111,6 +111,10 @@ class _GoodsListState extends State<GoodsList> {
               ),
         onRefresh: () async {
           log("refe");
+          init = true;
+          setState(() {
+            
+          });
           GoodsApi.getGoodsByPage(_currPage, 10, success: (data) {
             _results.clear();
             _currPage = 1;

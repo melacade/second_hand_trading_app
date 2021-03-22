@@ -115,9 +115,9 @@ class GoodsInfo {
   int id;
   String name;
   String info;
-  int price;
+  double price;
   String ownerId;
-  int originalPrice;
+  double originalPrice;
   String defaultImage;
   int count;
   int newPercentage;

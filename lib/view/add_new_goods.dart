@@ -23,9 +23,9 @@ class _AddNewGoodsState extends State<AddNewGoods> {
   String _info;
   List<String> _labels;
   String _name;
-  int _realPrice;
-  int _transCosts;
-  int _price;
+  double _realPrice;
+  double _transCosts;
+  double _price;
   void _onSubmit() {
     Map<String, dynamic> detail = {
       "newPercentage": _newPercentage,
@@ -33,6 +33,7 @@ class _AddNewGoodsState extends State<AddNewGoods> {
       "name": _name,
       "labels": _labels,
       "originalPrice": _realPrice,
+      "price" : _price,
       "transCosts": _transCosts
     };
     GoodsApi.addNewGoods(_imgs.sublist(0, _imgs.length - 1), detail,
@@ -315,11 +316,11 @@ class _AddNewGoodsState extends State<AddNewGoods> {
                           hintText: 'Enter price',
                         ),
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly, //只输入数字
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]+\.{0,1}[0-9]{0,2}')), //只输入数字
                           LengthLimitingTextInputFormatter(6) //限制长度
                         ],
                         onChanged: (value) {
-                          _price = int.parse(value);
+                          _price = double.parse(value);
                         },
                       ),
                     )
@@ -341,11 +342,11 @@ class _AddNewGoodsState extends State<AddNewGoods> {
                           hintText: 'Enter price',
                         ),
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly, //只输入数字
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]+\.{0,1}[0-9]{0,2}')), //只输入数字
                           LengthLimitingTextInputFormatter(6) //限制长度
                         ],
                         onChanged: (value) {
-                          _realPrice = int.parse(value);
+                          _realPrice = double.parse(value);
                         },
                       ),
                     )
@@ -366,11 +367,11 @@ class _AddNewGoodsState extends State<AddNewGoods> {
                           hintText: 'Enter costs',
                         ),
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly, //只输入数字
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]+\.{0,1}[0-9]{0,2}')), //只输入数字
                           LengthLimitingTextInputFormatter(6) //限制长度
                         ],
                         onChanged: (value) {
-                          _transCosts = int.parse(value);
+                          _transCosts = double.parse(value);
                         },
                       ),
                     )

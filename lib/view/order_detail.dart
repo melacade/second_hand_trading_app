@@ -65,6 +65,7 @@ class _OrderDetailState extends State<OrderDetail> {
           style: TextStyle(color: Colors.black),
         ),
       ),
+      backgroundColor: Colors.grey,
       body: data == null
           ? Column(
               children: [
@@ -92,10 +93,9 @@ class _OrderDetailState extends State<OrderDetail> {
                   ],
                 ),
                 Divider(
-                  color: Colors.grey,
+                  color: Colors.white,
                 ),
                 Container(
-                  color: Colors.grey,
                   child: Row(
                     children: [
                       Expanded(child: Text("Saler: ")),
@@ -109,14 +109,14 @@ class _OrderDetailState extends State<OrderDetail> {
                                     : NetworkImage(
                                         Http.baseUri + data['owner']['avator']),
                           ),
-                          Text(data['owner']['name']),
+                          Text("  ${data['owner']['name']}"),
                         ],
                       )),
                     ],
                   ),
                 ),
                 Divider(
-                  color: Colors.grey,
+                  color: Colors.white,
                 ),
                 Row(
                   children: [
@@ -125,12 +125,12 @@ class _OrderDetailState extends State<OrderDetail> {
                           data['address']['country'],
                           data['address']['province'],
                           data['address']['city'],
-                          data['address']['detail']),
+                          data['address']['detail'],id: data['address']['id'],),
                     ),
                   ],
                 ),
                 Divider(
-                  color: Colors.grey,
+                  color: Colors.white,
                 ),
                 Row(
                   children: [

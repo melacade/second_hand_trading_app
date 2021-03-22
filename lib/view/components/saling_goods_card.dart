@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:second_hand_trading_app/utils/image_loader.dart';
+class SalingGOodsCard extends StatefulWidget {
+  SalingGOodsCard({this.goodsId,this.commentCount,this.defaultImage,this.goodsName,this.left,this.saled});
+  int commentCount;
+  int goodsId;
+  String defaultImage;
+  int left;
+  int saled;
+  String goodsName;
 
-class OrderCard extends StatefulWidget {
-  OrderCard(
-      {this.id, this.date, this.image, this.price, this.name, this.status});
-  String id;
-  DateTime date;
-  String image;
-  double price;
-  String name;
-  int status;
+
   @override
-  _OrderCardState createState() => _OrderCardState();
+  _SalingGOodsCardState createState() => _SalingGOodsCardState();
 }
 
-class _OrderCardState extends State<OrderCard> {
+class _SalingGOodsCardState extends State<SalingGOodsCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -33,7 +33,7 @@ class _OrderCardState extends State<OrderCard> {
               flex: 1,
               child: Container(
                 child: ImageLoader(
-                  "http://10.0.2.2:8080" + widget.image,
+                  "http://10.0.2.2:8080" + widget.defaultImage,
                 ),
               ),
             ),
@@ -47,7 +47,7 @@ class _OrderCardState extends State<OrderCard> {
                       children: [
                         Expanded(
                           flex: 4,
-                          child: Text(widget.name,
+                          child: Text(widget.goodsName,
                               style: TextStyle(fontSize: 50.ssp)),
                         ),
                       ],
@@ -59,7 +59,7 @@ class _OrderCardState extends State<OrderCard> {
                       children: [
                         Expanded(
                           child: Text(
-                            "￥ ${widget.price}",
+                            "Left ${widget.left}  Sales ${widget.saled}",
                             style:
                                 TextStyle(color: Colors.red, fontSize: 50.ssp),
                           ),
@@ -72,21 +72,7 @@ class _OrderCardState extends State<OrderCard> {
             ),
             Expanded(
               child: Text(
-                widget.status == 0
-                    ? "Unpaid"
-                    : widget.status == 1
-                        ? "待收货"
-                        : widget.status == -1
-                            ? "已取消"
-                            : "已完成",
-                style: TextStyle(
-                    color: widget.status == 0
-                        ? Colors.grey
-                        : widget.status == 1
-                            ? Colors.brown
-                            : widget.status == -1
-                                ? Colors.yellow
-                                : Colors.green),
+                "${widget.commentCount} Comments",
               ),
             ),
           ],
