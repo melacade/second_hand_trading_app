@@ -195,4 +195,88 @@ class GoodsApi {
       }
     });
   }
+
+  static void getLabels({Success success}) {
+    _http.get("/api/goods/getLabels", null,
+    success: (json){
+      var res = NomalResponse.fromJson(json);
+      if(res.code == 200){
+        if(success!=null){
+          success(res.data);
+        }
+      }
+    });
+  }
+
+  static void addNewLabel(String name, String info, {Success success}) {
+    Map data = {
+      "name":name,
+      "info":info
+    };
+    _http.post("/api/goods/addLabel", data,success: (json){
+      var res = NomalResponse.fromJson(json);
+      if(res.code == 200){
+        if(success!=null){
+          success(res.data);
+        }
+      }
+    });
+  }
+
+  static void getSales(int page,int count,{Success success}) {
+    _http.get("/api/goods/getSaleGoodsByPage/${page}/${count}", null,success: (json){
+      var res = NomalResponse.fromJson(json);
+      if(res.code == 200){
+        if(success!=null){
+          success(res.data);
+        }
+      }
+    });
+  }
+
+  static void getCommentsByPage(int goodsId,int page, int count, {Success success, Fail fail}) {
+      _http.get("/api/goods/getCommentsByPage/${goodsId}/${page}/${count}",null,success: (json){
+        var res = NomalResponse.fromJson(json);
+        if(res.code == 200){
+          if(success!=null){
+            success(res.data);
+          }
+        }
+      },fail: (reason, code) {
+        
+      },);
+  }
+
+  static void postComment(int goodsId, String content, {Success success, Fail fail}){
+    _http.post("/api/goods/postComment", {
+      "goodsId":goodsId,
+      "content" : content
+    },
+      success: (json){
+        var res =NomalResponse.fromJson(json);
+        if(res.code == 200){
+          if(success!=null){
+            success(res.data);
+          }
+        }
+      }
+    );
+  }
+
+  static void getRecommend({Success success, Fail fail}) {
+    _http.get("/api/goods/getRecommend",null,success: (json) {
+        var res = NomalResponse.fromJson(json);
+        log(res.message);
+        if (res.code == 200) {
+          if (success != null) {
+            success(res.data);
+          }
+        } else {
+          if (fail != null) {
+            fail(res.message, res.code);
+          }
+        }
+      },);
+  }
+  
 }

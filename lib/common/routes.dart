@@ -4,6 +4,7 @@ import 'package:second_hand_trading_app/view/add_new_goods.dart';
 import 'package:second_hand_trading_app/view/add_new_security_problem.dart';
 import 'package:second_hand_trading_app/view/add_payment.dart';
 import 'package:second_hand_trading_app/view/address_list.dart';
+import 'package:second_hand_trading_app/view/comments_list.dart';
 import 'package:second_hand_trading_app/view/goods_detail_page.dart';
 import 'package:second_hand_trading_app/view/login_page.dart';
 import 'package:second_hand_trading_app/view/lost_and_found.dart';
@@ -57,6 +58,7 @@ class Routes {
   static const String orderDetail = "/orderDetail";
 
   static const String orderList = "/orderList";
+  static const String commentsList = "/commentsList";
 
   static Route findRoutes(RouteSettings settings) {
     final String name = settings.name;
@@ -135,14 +137,19 @@ class Routes {
         );
         break;
       case addressList:
-        page = AddressList( select :arguments);
+        page = AddressList(select: arguments);
         break;
       case orderDetail:
         page = OrderDetail(arguments);
         break;
-        case orderList:
+      case orderList:
         page = OrderList(status: arguments);
         break;
+
+      case commentsList:
+        page = CommentsList(args: arguments,);
+        break;
+        
       default:
         page = MainPage();
     }

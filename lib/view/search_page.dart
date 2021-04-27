@@ -18,9 +18,10 @@ class _SearchPageState extends State<SearchPage> {
         title: SearchBar(
           searchText: widget.searchText,
         ),
-
       ),
-      body: SearchBody(search: widget.searchText,),
+      body: SearchBody(
+        search: widget.searchText,
+      ),
     );
   }
 }

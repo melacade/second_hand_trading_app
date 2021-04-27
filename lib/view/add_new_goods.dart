@@ -7,12 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:provider/provider.dart';
 import 'package:second_hand_trading_app/api/goods_api.dart';
 import 'package:second_hand_trading_app/base/provider_wedget.dart';
 import 'package:second_hand_trading_app/common/routes.dart';
+import 'package:second_hand_trading_app/view/components/my_goods_labels.dart';
 import 'package:second_hand_trading_app/viewmodel/add_img_view_model.dart';
+import 'package:second_hand_trading_app/viewmodel/label_view_model.dart';
 
 class AddNewGoods extends StatefulWidget {
+  static List labels = [];
   @override
   _AddNewGoodsState createState() => _AddNewGoodsState();
 }
@@ -21,25 +25,87 @@ class _AddNewGoodsState extends State<AddNewGoods> {
   List<String> _imgs;
   int _newPercentage = 50;
   String _info;
-  List<String> _labels;
+
   String _name;
   double _realPrice;
   double _transCosts;
   double _price;
-  void _onSubmit() {
+  LabelViewModel model;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    AddNewGoods.labels = [];
+  }
+
+  Future _openModalBottomSheet(LabelViewModel model) async {
+    String name = "";
+    String info = "";
+    await showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 200.0,
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: [
+                    Expanded(child: Text("Lable Name: ")),
+                    Expanded(child: TextField(
+                      onChanged: (value) {
+                        name = value;
+                      },
+                    ))
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(child: Text("Lable Info: ")),
+                    Expanded(child: TextField(
+                      onChanged: (value) {
+                        info = value;
+                      },
+                    ))
+                  ],
+                ),
+                Center(
+                  child: TextButton(
+                    child: Text("Submit"),
+                    onPressed: () {
+                      if (name.length < 2) {
+                        return;
+                      }
+                      model.addLabel(name, info, success: () {
+                        Navigator.pop(context);
+                      },);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  void _onSubmit(LabelViewModel model) {
     Map<String, dynamic> detail = {
       "newPercentage": _newPercentage,
       "info": _info,
       "name": _name,
-      "labels": _labels,
+      "labels": model.selected.toList(),
       "originalPrice": _realPrice,
-      "price" : _price,
+      "price": _price,
       "transCosts": _transCosts
     };
     GoodsApi.addNewGoods(_imgs.sublist(0, _imgs.length - 1), detail,
         success: (json) {
-          Navigator.pop(context);
-        });
+      Navigator.pop(context);
+    });
   }
 
   final picker = ImagePicker();
@@ -120,7 +186,7 @@ class _AddNewGoodsState extends State<AddNewGoods> {
                 minimumSize: MaterialStateProperty.all(Size(40, 10)),
               ),
               onPressed: () {
-                _onSubmit();
+                _onSubmit(model);
               },
               child: Text(
                 "Release",
@@ -204,46 +270,49 @@ class _AddNewGoodsState extends State<AddNewGoods> {
                     Text("Classification / New percentage")
                   ],
                 ),
-                Row(
-                  children: [
-                    Text(
-                      "Classification",
-                      style: TextStyle(fontSize: 50.ssp),
-                    ),
-                    Padding(padding: EdgeInsets.all(10)),
-                    Container(
-                      width: .6.wp,
-                      height: 65.ssp,
-                      child: ListView.builder(
-                          itemCount: 10,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return Row(
-                              children: [
-                                Padding(padding: EdgeInsets.all(5)),
-                                TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.resolveWith(
-                                            (states) {
-                                      return Colors.yellow;
-                                    }),
-                                    shape: MaterialStateProperty.all(
-                                        StadiumBorder()),
-                                    minimumSize: MaterialStateProperty.all(
-                                        Size(40, 50.ssp)),
-                                  ),
-                                  onPressed: null,
-                                  child: Text(
-                                    "Class one",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
-                    )
-                  ],
+                ProviderWidget<LabelViewModel>(
+                  model: LabelViewModel(),
+                  onReady: (model) {
+                    this.model = model.init();
+                  },
+                  builder: (context, model, child) {
+                    return Row(
+                      children: [
+                        Container(
+                          width: .3.wp,
+                          child: Text(
+                            "Classification",
+                            style: TextStyle(fontSize: 50.ssp),
+                          ),
+                        ),
+                        Padding(padding: EdgeInsets.all(10)),
+                        Container(
+                          width: .5.wp,
+                          height: 65.ssp,
+                          child: ListView.builder(
+                              itemCount: model.labels.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                  children: [
+                                    Padding(padding: EdgeInsets.all(5)),
+                                    MyGoodsLabels(
+                                      id: model.labels[index]['id'],
+                                      labelName: model.labels[index]['name'],
+                                      model: model
+                                    ),
+                                  ],
+                                );
+                              }),
+                        ),
+                        IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              _openModalBottomSheet(model);
+                            })
+                      ],
+                    );
+                  },
                 ),
                 Row(
                   children: [
@@ -316,7 +385,8 @@ class _AddNewGoodsState extends State<AddNewGoods> {
                           hintText: 'Enter price',
                         ),
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]+\.{0,1}[0-9]{0,2}')), //只输入数字
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'[0-9]+\.{0,1}[0-9]{0,2}')), //只输入数字
                           LengthLimitingTextInputFormatter(6) //限制长度
                         ],
                         onChanged: (value) {
@@ -342,7 +412,8 @@ class _AddNewGoodsState extends State<AddNewGoods> {
                           hintText: 'Enter price',
                         ),
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]+\.{0,1}[0-9]{0,2}')), //只输入数字
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'[0-9]+\.{0,1}[0-9]{0,2}')), //只输入数字
                           LengthLimitingTextInputFormatter(6) //限制长度
                         ],
                         onChanged: (value) {
@@ -367,7 +438,8 @@ class _AddNewGoodsState extends State<AddNewGoods> {
                           hintText: 'Enter costs',
                         ),
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]+\.{0,1}[0-9]{0,2}')), //只输入数字
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'[0-9]+\.{0,1}[0-9]{0,2}')), //只输入数字
                           LengthLimitingTextInputFormatter(6) //限制长度
                         ],
                         onChanged: (value) {

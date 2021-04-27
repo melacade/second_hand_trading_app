@@ -21,6 +21,7 @@ class GoodsDetailPage extends StatefulWidget {
 
 class _GoodsDetailPageState extends State<GoodsDetailPage> {
   GoodsDetail goodsData;
+  var _status;
   var _count;
   var _address;
   void _showMessageDialog(String message) {
@@ -57,6 +58,15 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
     UserApi.getDefaultAddress(success:(data){
       _address = data;
     });
+    UserApi.getGoodsStatus(
+      widget.goodsId, success:(data){
+        _status = data;
+        setState(() {
+          
+        });
+      }
+    );
+    
   }
 
   void _onSubmit() {
@@ -64,7 +74,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
     Map data = {
       "goodsId": goodsData.data.goodsInfo.id,
       "price": _count * goodsData.data.goodsInfo.price,
-      "address": 4,
+      "address": _address['id'],
       "count": _count
     };
     GoodsApi.createOrder(data, success: (json) {
@@ -216,9 +226,8 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                 textAlign: TextAlign.center,
               ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
+        
         children: [
           ConstrainedBox(
             child: Swiper(
@@ -343,7 +352,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                 child: Text(
                   goodsData == null
                       ? " Loading"
-                      : goodsData.data.goodsInfo.info,
+                      : goodsData.data.goodsInfo.info == null ? "" : goodsData.data.goodsInfo.info,
                   style: TextStyle(fontSize: 60.ssp),
                 ),
               ),
@@ -359,19 +368,43 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
               children: [
                 IconButton(
                     icon: Image(
-                      image: AssetImage("assets/images/good.png"),
+                      image: _status == null || _status['like'] == false ? AssetImage("assets/images/good.png") : AssetImage("assets/images/good2.png"),
                     ),
-                    onPressed: null),
+                    onPressed: (){
+                      log("good");
+                      UserApi.addGood(widget.goodsId, success:(data){
+                        _status = data;
+                        setState(() {
+                          
+                        });
+                      });
+                    }),
                 IconButton(
                     icon: Image(
                       image: AssetImage("assets/images/comments.png"),
                     ),
-                    onPressed: null),
+                    onPressed: (){
+                      Navigator.pushNamed(context, Routes.commentsList,arguments: {
+                        "goods_image" : goodsData.data.goodsInfo.defaultImage,
+                        "goods_name": goodsData.data.goodsInfo.name,
+                        "goods_price": goodsData.data.goodsInfo.price,
+                        "goods_id" : goodsData.data.goodsInfo.id,
+                      });
+                    }),
                 IconButton(
                     icon: Image(
-                      image: AssetImage("assets/images/collect.png"),
+                      image:_status == null || _status['collect'] == false ?  AssetImage("assets/images/collect.png") :  AssetImage("assets/images/collect2.png"),
                     ),
-                    onPressed: null)
+                    
+                    onPressed: (){
+                      log("Collect it");
+                      UserApi.addCollect(widget.goodsId, success :(data){
+                        _status = data;
+                        setState(() {
+                          
+                        });
+                      });
+                    })
               ],
             ),
           ),

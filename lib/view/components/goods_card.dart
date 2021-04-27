@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:second_hand_trading_app/utils/http/http_utils.dart';
 import 'package:second_hand_trading_app/utils/image_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -42,7 +43,7 @@ class _GoodsCardState extends State<GoodsCard> {
         children: [
           Container(
             child: ImageLoader(
-              "http://10.0.2.2:8080" + widget.img,
+              Http.baseUri + widget.img,
             ),
           ),
           Container(

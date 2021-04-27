@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:dio_log/interceptor/dio_log_interceptor.dart';
+import 'package:second_hand_trading_app/utils/database/database_utils.dart';
 import 'package:second_hand_trading_app/viewmodel/user_view_model.dart';
 
 typedef Success = void Function(dynamic json);
@@ -13,6 +14,8 @@ class Http {
   static Http https = Http();
   static String baseUri = "http://10.0.2.2:8080";
   static String baseImgUri = "http://10.0.2.2:8080/img/";
+
+  DatabaseUtils databaseUtils = DatabaseUtils();
   static Http getInstance() {
     return https;
   }
@@ -37,12 +40,19 @@ class Http {
   }
 
   Future<void> get(String uri, Map<String, dynamic> params,
-      {Success success, Fail fail, After after}) {
+      {Success success, Fail fail, After after}) async{
     try {
       if (UserViewModel.userBean?.data?.token != null) {
         _dio.options.headers["X-token"] = UserViewModel.userBean?.data?.token;
       } else {
-        _dio.options.headers.remove("X-token");
+        var userData = await databaseUtils.findCurUSer();
+        if(userData.token == null){
+          _dio.options.headers.remove("X-token");
+        }else{
+          _dio.options.headers["X-token"] = userData.token;
+        }
+
+        
       }
       _dio.get(uri, queryParameters: params).then((response) {
         if (response.statusCode == 200) {

@@ -6,6 +6,7 @@ import 'package:second_hand_trading_app/view/components/goods_list.dart';
 import 'package:second_hand_trading_app/view/index.dart';
 import 'package:second_hand_trading_app/view/my_saling_goods.dart';
 import 'package:second_hand_trading_app/view/personal_center.dart';
+import 'package:second_hand_trading_app/view/recommend.dart';
 import 'package:second_hand_trading_app/view/register_page.dart';
 import 'package:second_hand_trading_app/viewmodel/user_view_model.dart';
 
@@ -32,7 +33,7 @@ class _MainPageState extends State<MainPage> {
         index: _selectedIndex,
         children: <Widget>[
           Index(),
-          ListPage(2),
+          Recommend(),
           MySalingGoods(),
           PersonalCenter(),
         ],
@@ -51,7 +52,7 @@ class _MainPageState extends State<MainPage> {
                     },
                 ),
                 IconButton(
-                    icon: Icon(Icons.search),
+                    icon: Icon(Icons.collections),
                     color: _selectedIndex == 1 ? Colors.red : Colors.grey,
                     onPressed: (){
                         _onItemTapped(1);

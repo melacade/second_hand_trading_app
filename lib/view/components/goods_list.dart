@@ -28,7 +28,7 @@ class _GoodsListState extends State<GoodsList> {
       _results.addAll(data);
       setState(() {});
       loading = false;
-      if (data.length <= 10) {
+      if (data.length < 10) {
         more = false;
         return;
       }
@@ -112,12 +112,13 @@ class _GoodsListState extends State<GoodsList> {
         onRefresh: () async {
           log("refe");
           init = true;
+          more = true;
+          _currPage = 1;
           setState(() {
             
           });
           GoodsApi.getGoodsByPage(_currPage, 10, success: (data) {
             _results.clear();
-            _currPage = 1;
             _results.addAll(data);
             init = false;
             setState(() {});

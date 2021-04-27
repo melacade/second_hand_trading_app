@@ -248,4 +248,38 @@ class UserApi {
       }
     });
   }
+
+  static void getGoodsStatus(goodsId, {Success success}) {
+    _https.get("/api/user/getGoodsStatus/${goodsId}",null,success : (json){
+      var res = NomalResponse.fromJson(json);
+      log(res.message);
+      if(res.code == 200){
+        if(success!=null){
+          success(res.data);
+        }
+      }
+    } );
+  }
+
+  static void addGood(goodsId, {Success success}){
+    _https.get("/api/user/addGood/${goodsId}",null, success: (json){
+      var res = NomalResponse.fromJson(json);
+      if(res.code == 200){
+        if(success!=null){
+          success(res.data);
+        }
+      }
+    });
+  }
+
+  static void addCollect(goodsId, {Success success}) {
+    _https.get("/api/user/addCollect/${goodsId}",null, success: (json){
+      var res = NomalResponse.fromJson(json);
+      if(res.code == 200){
+        if(success!=null){
+          success(res.data);
+        }
+      }
+    });
+  }
 }
